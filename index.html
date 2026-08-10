@@ -2,28 +2,30 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Sprite Vault — Fortnite Tracker</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  html, body {
+    background: #08090d;
+  }
+
   :root {
     --bg-0: #08090d;
-    --bg-1: #0e111a;
     --panel: #12151f;
-    --panel-border: #1f2432;
+    --panel-2: #171b28;
+    --panel-border: #232838;
     --ink: #f2f3f8;
-    --ink-dim: #7b8299;
+    --ink-dim: #8188a0;
     --ink-faint: #454b5e;
 
     --rare: #4d8fff;
-    --rare-dim: #24334f;
+    --rare-dim: #1c2740;
     --epic: #b96bff;
-    --epic-dim: #362147;
+    --epic-dim: #2a1c3d;
     --legendary: #ff9d3d;
-    --legendary-dim: #4a2e14;
+    --legendary-dim: #3d2712;
     --mythic: #ff5c8a;
-    --mythic-dim: #4a1a2a;
+    --mythic-dim: #3d1524;
 
     --v-normal: #8b93ab;
     --v-gold: #f0c04a;
@@ -33,6 +35,9 @@
     --v-holofoil: #4ad4f0;
     --v-cube: #6f7bff;
     --v-quack: #ff9640;
+
+    --ease: cubic-bezier(.16,1,.3,1);
+    --ease-bounce: cubic-bezier(.34,1.56,.64,1);
   }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -46,67 +51,122 @@
 
   body {
     margin: 0;
-    font-family: 'Space Grotesk', -apple-system, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
     background:
-      radial-gradient(ellipse 900px 500px at 50% -10%, #1a1030 0%, transparent 60%),
-      radial-gradient(ellipse 700px 500px at 90% 10%, #0a1f2e 0%, transparent 55%),
+      radial-gradient(ellipse 900px 520px at 50% -12%, #201138 0%, transparent 62%),
+      radial-gradient(ellipse 700px 500px at 95% 8%, #07202e 0%, transparent 55%),
+      radial-gradient(ellipse 600px 400px at 0% 90%, #1a0f28 0%, transparent 50%),
       var(--bg-0);
+    background-attachment: fixed;
     color: var(--ink);
     min-height: 100vh;
-    padding: 18px 14px 40px;
+    padding: 20px 14px 48px;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
-  .mono { font-family: 'IBM Plex Mono', monospace; }
+  .mono { font-family: 'SF Mono', 'Menlo', 'Consolas', monospace; }
+
+  /* ---------- Entrance ---------- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes floatGlow {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(6px,-8px) scale(1.04); }
+  }
+  @keyframes pulseRing {
+    0% { box-shadow: 0 0 0 0 rgba(185,107,255,0.35); }
+    100% { box-shadow: 0 0 0 14px rgba(185,107,255,0); }
+  }
 
   header {
     text-align: center;
     margin-bottom: 20px;
-    padding-top: 6px;
+    padding-top: 4px;
+    animation: fadeUp 0.5s var(--ease) backwards;
+  }
+  .badge-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .badge {
+    position: relative;
+    width: 46px; height: 46px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--epic), var(--rare));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    animation: floatGlow 4.5s ease-in-out infinite;
+    box-shadow: 0 8px 24px -8px rgba(185,107,255,0.6);
+  }
+  .badge::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 18px;
+    border: 1.5px solid rgba(185,107,255,0.3);
+    animation: pulseRing 2.4s ease-out infinite;
   }
   .eyebrow {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.22em;
+    font-family: 'SF Mono', 'Menlo', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.2em;
     color: var(--ink-faint);
     text-transform: uppercase;
     margin-bottom: 6px;
   }
   h1 {
-    font-size: 1.65rem;
-    font-weight: 700;
+    font-size: 1.7rem;
+    font-weight: 750;
     margin: 0;
     letter-spacing: -0.01em;
   }
   h1 span {
-    background: linear-gradient(100deg, var(--rare), var(--epic) 45%, var(--mythic));
+    background: linear-gradient(100deg, #6fa8ff, var(--epic) 45%, var(--mythic) 90%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    background-size: 200% auto;
+    animation: gradientShift 6s ease-in-out infinite;
+  }
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
   }
 
-  /* --- Signature element: the Vault --- */
+  /* ---------- Vault ---------- */
   .vault {
     position: relative;
-    background: linear-gradient(180deg, var(--panel), #0d1019);
+    background: linear-gradient(180deg, var(--panel-2), var(--panel) 60%);
     border: 1px solid var(--panel-border);
-    border-radius: 18px;
+    border-radius: 20px;
     padding: 20px 18px 16px;
     margin-bottom: 18px;
     overflow: hidden;
+    animation: fadeUp 0.5s var(--ease) 0.05s backwards;
+    box-shadow: 0 20px 40px -24px rgba(0,0,0,0.6);
   }
   .vault::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(139,107,255,0.08), transparent 40%);
+    background: linear-gradient(180deg, rgba(139,107,255,0.09), transparent 45%);
     pointer-events: none;
+  }
+  .vault-meta {
+    font-family: 'SF Mono', monospace;
+    font-size: 0.64rem;
+    color: var(--ink-faint);
+    margin-bottom: 12px;
   }
   .vault-top {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     position: relative;
   }
   .vault-title {
@@ -116,9 +176,10 @@
     letter-spacing: 0.08em;
   }
   .vault-count {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 1.1rem;
+    font-family: 'SF Mono', monospace;
+    font-size: 1.15rem;
     font-weight: 600;
+    font-variant-numeric: tabular-nums;
   }
   .vault-count .slash { color: var(--ink-faint); font-weight: 400; }
 
@@ -135,28 +196,28 @@
     border-radius: 999px;
     background: linear-gradient(90deg, var(--rare), var(--epic) 55%, var(--legendary) 85%, var(--mythic));
     width: 0%;
-    transition: width 0.6s cubic-bezier(.16,1,.3,1);
+    transition: width 0.7s var(--ease);
     position: relative;
   }
   .vault-fill::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
-    width: 40px;
-    animation: shimmer 2.6s ease-in-out infinite;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+    width: 46px;
+    animation: shimmer 2.4s ease-in-out infinite;
   }
   @keyframes shimmer {
-    0% { transform: translateX(-40px); }
-    100% { transform: translateX(280px); }
+    0% { transform: translateX(-46px); }
+    100% { transform: translateX(320px); }
   }
 
   .vault-rarities {
     display: flex;
     gap: 12px;
     margin-top: 12px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.68rem;
+    font-family: 'SF Mono', monospace;
+    font-size: 0.66rem;
     color: var(--ink-dim);
     flex-wrap: wrap;
   }
@@ -167,11 +228,12 @@
     margin-right: 4px;
   }
 
-  /* --- Controls --- */
+  /* ---------- Controls ---------- */
   .controls {
     display: flex;
     gap: 8px;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
+    animation: fadeUp 0.5s var(--ease) 0.1s backwards;
   }
   .search-wrap {
     position: relative;
@@ -179,67 +241,75 @@
   }
   .search-wrap svg {
     position: absolute;
-    left: 12px; top: 50%;
+    left: 13px; top: 50%;
     transform: translateY(-50%);
     opacity: 0.4;
+    pointer-events: none;
   }
   input[type="text"] {
     width: 100%;
     background: var(--panel);
     border: 1px solid var(--panel-border);
     color: var(--ink);
-    padding: 11px 12px 11px 36px;
-    border-radius: 12px;
-    font-size: 0.9rem;
+    padding: 12px 12px 12px 38px;
+    border-radius: 13px;
+    font-size: 0.92rem;
     font-family: inherit;
-    transition: border-color 0.2s;
+    transition: border-color 0.25s, box-shadow 0.25s;
   }
   input[type="text"]:focus {
     outline: none;
     border-color: var(--epic);
+    box-shadow: 0 0 0 3px rgba(185,107,255,0.15);
   }
   .filter-chips {
     display: flex;
     gap: 6px;
     margin-bottom: 16px;
+    overflow-x: auto;
+    animation: fadeUp 0.5s var(--ease) 0.15s backwards;
   }
   .filter-chip {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'SF Mono', monospace;
     font-size: 0.72rem;
-    padding: 7px 12px;
-    border-radius: 10px;
+    padding: 8px 13px;
+    border-radius: 11px;
     border: 1px solid var(--panel-border);
     background: var(--panel);
     color: var(--ink-dim);
     cursor: pointer;
-    transition: all 0.15s;
+    transition: transform 0.15s var(--ease-bounce), background 0.25s, border-color 0.25s, color 0.25s;
     white-space: nowrap;
+    user-select: none;
   }
   .filter-chip.active {
-    background: rgba(185,107,255,0.14);
+    background: rgba(185,107,255,0.16);
     border-color: var(--epic);
     color: var(--ink);
+    transform: scale(1.04);
   }
-  .filter-chip:active { transform: scale(0.95); }
+  .filter-chip:active { transform: scale(0.94); }
 
-  /* --- Sprite cards --- */
+  /* ---------- Sprite cards ---------- */
   .sprite-card {
     position: relative;
     background: var(--panel);
     border: 1px solid var(--panel-border);
     border-left: 3px solid var(--panel-border);
-    border-radius: 14px;
-    padding: 14px 14px 12px;
+    border-radius: 16px;
+    padding: 15px 15px 13px;
     margin-bottom: 10px;
-    transition: transform 0.2s, border-color 0.3s, box-shadow 0.3s;
-    animation: cardIn 0.35s cubic-bezier(.16,1,.3,1) backwards;
+    transition: transform 0.25s var(--ease), border-color 0.35s, box-shadow 0.35s;
+    animation: cardIn 0.4s var(--ease) backwards;
+    will-change: transform;
   }
+  .sprite-card:active { transform: scale(0.985); }
   @keyframes cardIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
   }
   .sprite-card.complete {
-    box-shadow: 0 0 0 1px rgba(255,255,255,0.03), 0 8px 24px -8px var(--card-glow, transparent);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.03), 0 10px 28px -10px var(--card-glow, transparent);
   }
   .sprite-card[data-rarity="Rare"] { border-left-color: var(--rare); }
   .sprite-card[data-rarity="Epic"] { border-left-color: var(--epic); }
@@ -250,30 +320,40 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 11px;
   }
   .sprite-name-row {
     display: flex;
     align-items: center;
-    gap: 9px;
+    gap: 10px;
   }
   .sprite-icon {
-    width: 30px; height: 30px;
-    border-radius: 9px;
+    width: 32px; height: 32px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.95rem;
+    font-size: 1rem;
     flex-shrink: 0;
+    transition: transform 0.3s var(--ease-bounce);
+  }
+  .sprite-card.complete .sprite-icon {
+    animation: iconPop 0.5s var(--ease-bounce);
+  }
+  @keyframes iconPop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.25) rotate(-6deg); }
+    100% { transform: scale(1) rotate(0); }
   }
   .sprite-name {
-    font-weight: 600;
-    font-size: 0.95rem;
+    font-weight: 650;
+    font-size: 0.96rem;
+    letter-spacing: -0.005em;
   }
   .rarity-tag {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'SF Mono', monospace;
     font-size: 0.62rem;
-    padding: 3px 8px;
+    padding: 3px 9px;
     border-radius: 999px;
     font-weight: 500;
     text-transform: uppercase;
@@ -295,42 +375,43 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    padding: 7px 11px;
+    padding: 7px 12px;
     border-radius: 999px;
     border: 1px solid var(--panel-border);
     background: #0d0f17;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.72rem;
+    font-family: 'SF Mono', monospace;
+    font-size: 0.71rem;
     cursor: pointer;
     user-select: none;
     color: var(--ink-dim);
-    transition: transform 0.12s, background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
+    transition: transform 0.18s var(--ease-bounce), background 0.25s, border-color 0.25s, color 0.25s, box-shadow 0.3s;
     overflow: visible;
   }
-  .variant-chip:active { transform: scale(0.92); }
+  .variant-chip:active { transform: scale(0.9); }
   .variant-chip .dot {
     width: 7px; height: 7px; border-radius: 50%;
     background: currentColor;
     opacity: 0.4;
-    transition: opacity 0.2s, transform 0.3s;
+    transition: opacity 0.25s, transform 0.35s var(--ease-bounce);
   }
   .variant-chip.on .dot {
     opacity: 1;
-    transform: scale(1.15);
+    transform: scale(1.2);
   }
   .variant-chip.on {
     color: #08090d;
-    font-weight: 600;
+    font-weight: 650;
     border-color: transparent;
+    transform: scale(1.03);
   }
   .variant-chip.v-Normal.on { background: var(--v-normal); }
-  .variant-chip.v-Gold.on { background: var(--v-gold); box-shadow: 0 0 14px -2px var(--v-gold); }
-  .variant-chip.v-Gummy.on { background: var(--v-gummy); box-shadow: 0 0 14px -2px var(--v-gummy); }
-  .variant-chip.v-Galaxy.on { background: var(--v-galaxy); color: #fff; box-shadow: 0 0 14px -2px var(--v-galaxy); }
-  .variant-chip.v-Gem.on { background: var(--v-gem); box-shadow: 0 0 14px -2px var(--v-gem); }
-  .variant-chip.v-Holofoil.on { background: var(--v-holofoil); box-shadow: 0 0 14px -2px var(--v-holofoil); }
-  .variant-chip.v-Cube.on { background: var(--v-cube); color: #fff; box-shadow: 0 0 14px -2px var(--v-cube); }
-  .variant-chip.v-Quack.on { background: var(--v-quack); box-shadow: 0 0 14px -2px var(--v-quack); }
+  .variant-chip.v-Gold.on { background: var(--v-gold); box-shadow: 0 0 16px -2px var(--v-gold); }
+  .variant-chip.v-Gummy.on { background: var(--v-gummy); box-shadow: 0 0 16px -2px var(--v-gummy); }
+  .variant-chip.v-Galaxy.on { background: var(--v-galaxy); color: #fff; box-shadow: 0 0 16px -2px var(--v-galaxy); }
+  .variant-chip.v-Gem.on { background: var(--v-gem); box-shadow: 0 0 16px -2px var(--v-gem); }
+  .variant-chip.v-Holofoil.on { background: var(--v-holofoil); box-shadow: 0 0 16px -2px var(--v-holofoil); }
+  .variant-chip.v-Cube.on { background: var(--v-cube); color: #fff; box-shadow: 0 0 16px -2px var(--v-cube); }
+  .variant-chip.v-Quack.on { background: var(--v-quack); box-shadow: 0 0 16px -2px var(--v-quack); }
 
   .burst {
     position: absolute;
@@ -339,26 +420,27 @@
     border-radius: 50%;
     background: currentColor;
     pointer-events: none;
-    animation: burst-out 0.55s ease-out forwards;
+    animation: burst-out 0.6s var(--ease) forwards;
   }
   @keyframes burst-out {
     0% { opacity: 1; transform: translate(-50%,-50%) scale(1) rotate(var(--ang)) translateX(0); }
-    100% { opacity: 0; transform: translate(-50%,-50%) scale(0.3) rotate(var(--ang)) translateX(26px); }
+    100% { opacity: 0; transform: translate(-50%,-50%) scale(0.2) rotate(var(--ang)) translateX(30px); }
   }
 
   .sprite-foot {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 11px;
   }
   .sprite-progress {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'SF Mono', monospace;
     font-size: 0.68rem;
     color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
   }
   .mini-track {
-    width: 60px; height: 4px;
+    width: 62px; height: 4px;
     background: #1c202c;
     border-radius: 999px;
     overflow: hidden;
@@ -366,50 +448,81 @@
   .mini-fill {
     height: 100%;
     border-radius: 999px;
-    transition: width 0.4s ease;
+    transition: width 0.5s var(--ease);
   }
 
   .empty-state {
     text-align: center;
-    padding: 50px 20px;
+    padding: 54px 20px;
     color: var(--ink-faint);
+    animation: fadeUp 0.4s var(--ease);
   }
-  .empty-state .glyph { font-size: 2rem; margin-bottom: 10px; opacity: 0.5; }
+  .empty-state .glyph {
+    font-size: 2.1rem;
+    margin-bottom: 10px;
+    opacity: 0.5;
+    display: inline-block;
+    animation: floatGlow 3s ease-in-out infinite;
+  }
 
   footer {
     text-align: center;
     color: var(--ink-faint);
     font-size: 0.72rem;
-    margin-top: 24px;
+    margin-top: 26px;
+    animation: fadeUp 0.5s var(--ease) 0.2s backwards;
   }
   .reset-btn {
     background: none;
     border: 1px solid #3a1f26;
     color: #ff8a9d;
-    padding: 7px 14px;
-    border-radius: 10px;
+    padding: 8px 16px;
+    border-radius: 11px;
     font-size: 0.72rem;
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'SF Mono', monospace;
     cursor: pointer;
     margin-top: 12px;
-    transition: background 0.2s;
+    transition: background 0.2s, transform 0.15s var(--ease-bounce);
   }
-  .reset-btn:active { background: rgba(255,90,120,0.1); }
+  .reset-btn:active { background: rgba(255,90,120,0.12); transform: scale(0.95); }
+
+  /* Toast for full completion */
+  .toast {
+    position: fixed;
+    left: 50%; bottom: 24px;
+    transform: translate(-50%, 20px);
+    background: linear-gradient(135deg, var(--epic), var(--rare));
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 14px;
+    font-weight: 650;
+    font-size: 0.85rem;
+    box-shadow: 0 12px 32px -8px rgba(185,107,255,0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s var(--ease), transform 0.35s var(--ease-bounce);
+    z-index: 50;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 </style>
 </head>
 <body>
 
 <header>
+  <div class="badge-row"><div class="badge">🗝️</div></div>
   <div class="eyebrow">Sprite Collection Log</div>
   <h1><span>Sprite Vault</span></h1>
 </header>
 
 <div class="vault">
+  <div class="vault-meta">Bijgewerkt t/m 8 aug 2026 · 24 sprites · 109 varianten</div>
   <div class="vault-top">
     <span class="vault-title">Voortgang</span>
     <span class="vault-count mono"><span id="obt-count">0</span><span class="slash"> / </span><span id="tot-count">0</span></span>
   </div>
-  <div style="font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:var(--ink-faint); margin-bottom:10px;">Bijgewerkt t/m 8 aug 2026 · 24 sprites · 109 varianten</div>
   <div class="vault-track">
     <div class="vault-fill" id="vault-fill"></div>
   </div>
@@ -437,15 +550,15 @@
 <div id="list"></div>
 
 <footer>
-  Voortgang wordt lokaal opgeslagen op dit toestel.
+  Voortgang wordt lokaal opgeslagen in deze browser.
   <br>
   <button class="reset-btn" id="reset-btn">Alles resetten</button>
 </footer>
 
+<div class="toast" id="toast"></div>
+
 <script>
 // Data geverifieerd t/m 8 augustus 2026 (na de Gem Sprite-update van 6 augustus)
-const ALL_VARIANTS = ["Normal", "Gold", "Gummy", "Galaxy", "Holofoil", "Cube", "Quack", "Gem"];
-
 const SPRITES = [
   { name: "Water", rarity: "Rare", icon: "💧", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil","Quack","Gem"] },
   { name: "Earth", rarity: "Rare", icon: "🌍", variants: ["Normal","Gold","Gummy","Galaxy","Cube","Quack","Gem"] },
@@ -478,17 +591,18 @@ const VARIANT_COLOR = { Normal: "#8b93ab", Gold: "#f0c04a", Gummy: "#ff6fc4", Ga
 
 let state = {};
 let currentFilter = 'all';
+let lastFullPct = 0;
 
-async function loadState() {
+function loadState() {
   try {
-    const res = await window.storage.get("sprite-progress", false);
-    state = res ? JSON.parse(res.value) : {};
+    const raw = localStorage.getItem("sprite-progress");
+    state = raw ? JSON.parse(raw) : {};
   } catch (e) { state = {}; }
   render();
 }
 
-async function saveState() {
-  try { await window.storage.set("sprite-progress", JSON.stringify(state), false); }
+function saveState() {
+  try { localStorage.setItem("sprite-progress", JSON.stringify(state)); }
   catch (e) { console.error("Opslaan mislukt", e); }
 }
 
@@ -497,7 +611,12 @@ function toggleVariant(spriteName, variant, chipEl) {
   state[spriteName][variant] = !state[spriteName][variant];
   saveState();
 
-  if (state[spriteName][variant]) spawnBurst(chipEl, VARIANT_COLOR[variant]);
+  if (state[spriteName][variant]) {
+    spawnBurst(chipEl, VARIANT_COLOR[variant]);
+    const sp = SPRITES.find(s => s.name === spriteName);
+    const count = countObtained(sp);
+    if (count === sp.variants.length) showToast(`${spriteName} compleet! ✨`);
+  }
 
   render();
 }
@@ -512,8 +631,17 @@ function spawnBurst(el, color) {
     p.style.left = (rect.width/2) + 'px';
     p.style.top = (rect.height/2) + 'px';
     el.appendChild(p);
-    setTimeout(() => p.remove(), 600);
+    setTimeout(() => p.remove(), 650);
   }
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
 }
 
 function countObtained(sprite) {
@@ -557,7 +685,7 @@ function render() {
     const card = document.createElement('div');
     card.className = 'sprite-card';
     card.dataset.rarity = sp.rarity;
-    card.style.animationDelay = (i * 0.03) + 's';
+    card.style.animationDelay = Math.min(i * 0.03, 0.4) + 's';
 
     const count = countObtained(sp);
     const s = state[sp.name] || {};
@@ -605,10 +733,10 @@ document.querySelectorAll('.filter-chip').forEach(chip => {
     render();
   });
 });
-document.getElementById('reset-btn').addEventListener('click', async () => {
+document.getElementById('reset-btn').addEventListener('click', () => {
   if (confirm('Weet je zeker dat je alle voortgang wilt resetten?')) {
     state = {};
-    await saveState();
+    saveState();
     render();
   }
 });
