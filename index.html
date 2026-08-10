@@ -31,6 +31,8 @@
     --v-galaxy: #8b6bff;
     --v-gem: #3ddc97;
     --v-holofoil: #4ad4f0;
+    --v-cube: #6f7bff;
+    --v-quack: #ff9640;
   }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -327,6 +329,8 @@
   .variant-chip.v-Galaxy.on { background: var(--v-galaxy); color: #fff; box-shadow: 0 0 14px -2px var(--v-galaxy); }
   .variant-chip.v-Gem.on { background: var(--v-gem); box-shadow: 0 0 14px -2px var(--v-gem); }
   .variant-chip.v-Holofoil.on { background: var(--v-holofoil); box-shadow: 0 0 14px -2px var(--v-holofoil); }
+  .variant-chip.v-Cube.on { background: var(--v-cube); color: #fff; box-shadow: 0 0 14px -2px var(--v-cube); }
+  .variant-chip.v-Quack.on { background: var(--v-quack); box-shadow: 0 0 14px -2px var(--v-quack); }
 
   .burst {
     position: absolute;
@@ -405,6 +409,7 @@
     <span class="vault-title">Voortgang</span>
     <span class="vault-count mono"><span id="obt-count">0</span><span class="slash"> / </span><span id="tot-count">0</span></span>
   </div>
+  <div style="font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:var(--ink-faint); margin-bottom:10px;">Bijgewerkt t/m 8 aug 2026 · 24 sprites · 109 varianten</div>
   <div class="vault-track">
     <div class="vault-fill" id="vault-fill"></div>
   </div>
@@ -438,34 +443,38 @@
 </footer>
 
 <script>
-const VARIANTS = ["Normal", "Gold", "Gummy", "Galaxy", "Gem", "Holofoil"];
+// Data geverifieerd t/m 8 augustus 2026 (na de Gem Sprite-update van 6 augustus)
+const ALL_VARIANTS = ["Normal", "Gold", "Gummy", "Galaxy", "Holofoil", "Cube", "Quack", "Gem"];
 
 const SPRITES = [
-  { name: "Earth", rarity: "Rare", icon: "🌍" },
-  { name: "Fire", rarity: "Rare", icon: "🔥" },
-  { name: "Water", rarity: "Rare", icon: "💧" },
-  { name: "Duck", rarity: "Rare", icon: "🦆" },
-  { name: "Fishy", rarity: "Rare", icon: "🐟" },
-  { name: "Ghost", rarity: "Epic", icon: "👻" },
-  { name: "Demon", rarity: "Epic", icon: "😈" },
-  { name: "King", rarity: "Epic", icon: "👑" },
-  { name: "Dream", rarity: "Epic", icon: "💭" },
-  { name: "Punk", rarity: "Epic", icon: "🎸" },
-  { name: "Aura", rarity: "Epic", icon: "✨" },
-  { name: "Striker", rarity: "Epic", icon: "⚡" },
-  { name: "Zero Point", rarity: "Legendary", icon: "🌀" },
-  { name: "Boss", rarity: "Legendary", icon: "🕶️" },
-  { name: "John Wick", rarity: "Legendary", icon: "🐺" },
-  { name: "Ironmouse", rarity: "Legendary", icon: "🐭" },
-  { name: "Peely", rarity: "Legendary", icon: "🍌" },
-  { name: "Llama", rarity: "Legendary", icon: "🦙" },
-  { name: "Batman", rarity: "Legendary", icon: "🦇" },
-  { name: "Grim", rarity: "Mythic", icon: "💀" },
-  { name: "Pollo", rarity: "Mythic", icon: "🐔" },
+  { name: "Water", rarity: "Rare", icon: "💧", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil","Quack","Gem"] },
+  { name: "Earth", rarity: "Rare", icon: "🌍", variants: ["Normal","Gold","Gummy","Galaxy","Cube","Quack","Gem"] },
+  { name: "Fire", rarity: "Rare", icon: "🔥", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil","Cube","Quack"] },
+  { name: "Fishy", rarity: "Rare", icon: "🐟", variants: ["Normal","Gold","Gummy","Galaxy","Cube"] },
+  { name: "Air", rarity: "Rare", icon: "🌬️", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil"] },
+  { name: "Duck", rarity: "Epic", icon: "🦆", variants: ["Normal","Gold","Gummy","Galaxy","Gem"] },
+  { name: "Ghost", rarity: "Epic", icon: "👻", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil"] },
+  { name: "Demon", rarity: "Epic", icon: "😈", variants: ["Normal","Gold","Gummy","Galaxy","Gem"] },
+  { name: "King", rarity: "Epic", icon: "👑", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil"] },
+  { name: "Aura", rarity: "Epic", icon: "✨", variants: ["Normal","Gold","Gummy","Galaxy","Gem"] },
+  { name: "Striker", rarity: "Epic", icon: "⚡", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil"] },
+  { name: "Dream", rarity: "Legendary", icon: "💭", variants: ["Normal","Gold","Gummy","Galaxy","Cube"] },
+  { name: "Punk", rarity: "Legendary", icon: "🎸", variants: ["Normal","Gold","Gummy","Galaxy","Cube","Gem"] },
+  { name: "Boss", rarity: "Legendary", icon: "🕶️", variants: ["Normal","Gold","Gummy","Galaxy","Cube"] },
+  { name: "Seven", rarity: "Legendary", icon: "7️⃣", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil"] },
+  { name: "Lootin' Llama", rarity: "Legendary", icon: "🦙", variants: ["Normal","Gold","Gummy","Galaxy","Gem"] },
+  { name: "Peeky Peely", rarity: "Legendary", icon: "🍌", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil"] },
+  { name: "Batman", rarity: "Mythic", icon: "🦇", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil","Cube"] },
+  { name: "Grim Reaper", rarity: "Mythic", icon: "💀", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil","Cube","Gem"] },
+  { name: "Zero Point", rarity: "Mythic", icon: "🌀", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil","Cube","Quack","Gem"] },
+  { name: "Burnt Peanut", rarity: "Mythic", icon: "🥜", variants: ["Normal"] },
+  { name: "Vini Jr.", rarity: "Mythic", icon: "⚽", variants: ["Normal"] },
+  { name: "Pollo", rarity: "Mythic", icon: "🐔", variants: ["Normal"] },
+  { name: "John Wick", rarity: "Mythic", icon: "🐺", variants: ["Normal"] },
 ];
 
 const RARITY_COLOR = { Rare: "#4d8fff", Epic: "#b96bff", Legendary: "#ff9d3d", Mythic: "#ff5c8a" };
-const VARIANT_COLOR = { Normal: "#8b93ab", Gold: "#f0c04a", Gummy: "#ff6fc4", Galaxy: "#8b6bff", Gem: "#3ddc97", Holofoil: "#4ad4f0" };
+const VARIANT_COLOR = { Normal: "#8b93ab", Gold: "#f0c04a", Gummy: "#ff6fc4", Galaxy: "#8b6bff", Gem: "#3ddc97", Holofoil: "#4ad4f0", Cube: "#6f7bff", Quack: "#ff9640" };
 
 let state = {};
 let currentFilter = 'all';
@@ -507,15 +516,14 @@ function spawnBurst(el, color) {
   }
 }
 
-function countObtained(spriteName) {
-  const s = state[spriteName] || {};
-  return VARIANTS.filter(v => s[v]).length;
+function countObtained(sprite) {
+  const s = state[sprite.name] || {};
+  return sprite.variants.filter(v => s[v]).length;
 }
 
 function totalStats() {
-  let obtained = 0;
-  const total = SPRITES.length * VARIANTS.length;
-  SPRITES.forEach(sp => obtained += countObtained(sp.name));
+  let obtained = 0, total = 0;
+  SPRITES.forEach(sp => { obtained += countObtained(sp); total += sp.variants.length; });
   return { obtained, total };
 }
 
@@ -533,10 +541,10 @@ function render() {
 
   const filtered = SPRITES.filter(sp => {
     if (searchVal && !sp.name.toLowerCase().includes(searchVal)) return false;
-    const count = countObtained(sp.name);
-    if (currentFilter === 'missing' && count === VARIANTS.length) return false;
+    const count = countObtained(sp);
+    if (currentFilter === 'missing' && count === sp.variants.length) return false;
     if (currentFilter === 'obtained' && count === 0) return false;
-    if (currentFilter === 'complete' && count !== VARIANTS.length) return false;
+    if (currentFilter === 'complete' && count !== sp.variants.length) return false;
     return true;
   });
 
@@ -551,9 +559,9 @@ function render() {
     card.dataset.rarity = sp.rarity;
     card.style.animationDelay = (i * 0.03) + 's';
 
-    const count = countObtained(sp.name);
+    const count = countObtained(sp);
     const s = state[sp.name] || {};
-    if (count === VARIANTS.length) {
+    if (count === sp.variants.length) {
       card.classList.add('complete');
       card.style.setProperty('--card-glow', RARITY_COLOR[sp.rarity] + '33');
     }
@@ -567,15 +575,15 @@ function render() {
         <span class="rarity-tag ${sp.rarity}">${sp.rarity}</span>
       </div>
       <div class="variant-row">
-        ${VARIANTS.map(v => `
+        ${sp.variants.map(v => `
           <div class="variant-chip v-${v} ${s[v] ? 'on' : ''}" data-sprite="${sp.name}" data-variant="${v}">
             <span class="dot"></span>${v}
           </div>
         `).join('')}
       </div>
       <div class="sprite-foot">
-        <span class="sprite-progress">${count} / ${VARIANTS.length} varianten</span>
-        <div class="mini-track"><div class="mini-fill" style="width:${(count/VARIANTS.length)*100}%; background:${RARITY_COLOR[sp.rarity]}"></div></div>
+        <span class="sprite-progress">${count} / ${sp.variants.length} varianten</span>
+        <div class="mini-track"><div class="mini-fill" style="width:${(count/sp.variants.length)*100}%; background:${RARITY_COLOR[sp.rarity]}"></div></div>
       </div>
     `;
     list.appendChild(card);
