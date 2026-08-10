@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sprite Vault — Fortnite Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-0: #08090d;
+    --bg-1: #0e111a;
+    --panel: #12151f;
+    --panel-border: #1f2432;
+    --ink: #f2f3f8;
+    --ink-dim: #7b8299;
+    --ink-faint: #454b5e;
+
+    --rare: #4d8fff;
+    --rare-dim: #24334f;
+    --epic: #b96bff;
+    --epic-dim: #362147;
+    --legendary: #ff9d3d;
+    --legendary-dim: #4a2e14;
+    --mythic: #ff5c8a;
+    --mythic-dim: #4a1a2a;
+
+    --v-normal: #8b93ab;
+    --v-gold: #f0c04a;
+    --v-gummy: #ff6fc4;
+    --v-galaxy: #8b6bff;
+    --v-gem: #3ddc97;
+    --v-holofoil: #4ad4f0;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Space Grotesk', -apple-system, sans-serif;
+    background:
+      radial-gradient(ellipse 900px 500px at 50% -10%, #1a1030 0%, transparent 60%),
+      radial-gradient(ellipse 700px 500px at 90% 10%, #0a1f2e 0%, transparent 55%),
+      var(--bg-0);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 18px 14px 40px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+
+  header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-top: 6px;
+  }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  h1 {
+    font-size: 1.65rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  h1 span {
+    background: linear-gradient(100deg, var(--rare), var(--epic) 45%, var(--mythic));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* --- Signature element: the Vault --- */
+  .vault {
+    position: relative;
+    background: linear-gradient(180deg, var(--panel), #0d1019);
+    border: 1px solid var(--panel-border);
+    border-radius: 18px;
+    padding: 20px 18px 16px;
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+  .vault::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(139,107,255,0.08), transparent 40%);
+    pointer-events: none;
+  }
+  .vault-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+    position: relative;
+  }
+  .vault-title {
+    font-size: 0.78rem;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .vault-count {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  .vault-count .slash { color: var(--ink-faint); font-weight: 400; }
+
+  .vault-track {
+    position: relative;
+    height: 14px;
+    border-radius: 999px;
+    background: #191d29;
+    border: 1px solid #232838;
+    overflow: hidden;
+  }
+  .vault-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--rare), var(--epic) 55%, var(--legendary) 85%, var(--mythic));
+    width: 0%;
+    transition: width 0.6s cubic-bezier(.16,1,.3,1);
+    position: relative;
+  }
+  .vault-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    width: 40px;
+    animation: shimmer 2.6s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    0% { transform: translateX(-40px); }
+    100% { transform: translateX(280px); }
+  }
+
+  .vault-rarities {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ink-dim);
+    flex-wrap: wrap;
+  }
+  .vault-rarities .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-right: 4px;
+  }
+
+  /* --- Controls --- */
+  .controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .search-wrap {
+    position: relative;
+    flex: 1;
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: 12px; top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.4;
+  }
+  input[type="text"] {
+    width: 100%;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    color: var(--ink);
+    padding: 11px 12px 11px 36px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+  input[type="text"]:focus {
+    outline: none;
+    border-color: var(--epic);
+  }
+  .filter-chips {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .filter-chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    padding: 7px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--panel-border);
+    background: var(--panel);
+    color: var(--ink-dim);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .filter-chip.active {
+    background: rgba(185,107,255,0.14);
+    border-color: var(--epic);
+    color: var(--ink);
+  }
+  .filter-chip:active { transform: scale(0.95); }
+
+  /* --- Sprite cards --- */
+  .sprite-card {
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-left: 3px solid var(--panel-border);
+    border-radius: 14px;
+    padding: 14px 14px 12px;
+    margin-bottom: 10px;
+    transition: transform 0.2s, border-color 0.3s, box-shadow 0.3s;
+    animation: cardIn 0.35s cubic-bezier(.16,1,.3,1) backwards;
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .sprite-card.complete {
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.03), 0 8px 24px -8px var(--card-glow, transparent);
+  }
+  .sprite-card[data-rarity="Rare"] { border-left-color: var(--rare); }
+  .sprite-card[data-rarity="Epic"] { border-left-color: var(--epic); }
+  .sprite-card[data-rarity="Legendary"] { border-left-color: var(--legendary); }
+  .sprite-card[data-rarity="Mythic"] { border-left-color: var(--mythic); }
+
+  .sprite-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .sprite-name-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .sprite-icon {
+    width: 30px; height: 30px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+  .sprite-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .rarity-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+  .rarity-tag.Rare { background: var(--rare-dim); color: var(--rare); }
+  .rarity-tag.Epic { background: var(--epic-dim); color: var(--epic); }
+  .rarity-tag.Legendary { background: var(--legendary-dim); color: var(--legendary); }
+  .rarity-tag.Mythic { background: var(--mythic-dim); color: var(--mythic); }
+
+  .variant-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .variant-chip {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 11px;
+    border-radius: 999px;
+    border: 1px solid var(--panel-border);
+    background: #0d0f17;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    cursor: pointer;
+    user-select: none;
+    color: var(--ink-dim);
+    transition: transform 0.12s, background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
+    overflow: visible;
+  }
+  .variant-chip:active { transform: scale(0.92); }
+  .variant-chip .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: currentColor;
+    opacity: 0.4;
+    transition: opacity 0.2s, transform 0.3s;
+  }
+  .variant-chip.on .dot {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  .variant-chip.on {
+    color: #08090d;
+    font-weight: 600;
+    border-color: transparent;
+  }
+  .variant-chip.v-Normal.on { background: var(--v-normal); }
+  .variant-chip.v-Gold.on { background: var(--v-gold); box-shadow: 0 0 14px -2px var(--v-gold); }
+  .variant-chip.v-Gummy.on { background: var(--v-gummy); box-shadow: 0 0 14px -2px var(--v-gummy); }
+  .variant-chip.v-Galaxy.on { background: var(--v-galaxy); color: #fff; box-shadow: 0 0 14px -2px var(--v-galaxy); }
+  .variant-chip.v-Gem.on { background: var(--v-gem); box-shadow: 0 0 14px -2px var(--v-gem); }
+  .variant-chip.v-Holofoil.on { background: var(--v-holofoil); box-shadow: 0 0 14px -2px var(--v-holofoil); }
+
+  .burst {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    pointer-events: none;
+    animation: burst-out 0.55s ease-out forwards;
+  }
+  @keyframes burst-out {
+    0% { opacity: 1; transform: translate(-50%,-50%) scale(1) rotate(var(--ang)) translateX(0); }
+    100% { opacity: 0; transform: translate(-50%,-50%) scale(0.3) rotate(var(--ang)) translateX(26px); }
+  }
+
+  .sprite-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .sprite-progress {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+  }
+  .mini-track {
+    width: 60px; height: 4px;
+    background: #1c202c;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .mini-fill {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.4s ease;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--ink-faint);
+  }
+  .empty-state .glyph { font-size: 2rem; margin-bottom: 10px; opacity: 0.5; }
+
+  footer {
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 0.72rem;
+    margin-top: 24px;
+  }
+  .reset-btn {
+    background: none;
+    border: 1px solid #3a1f26;
+    color: #ff8a9d;
+    padding: 7px 14px;
+    border-radius: 10px;
+    font-size: 0.72rem;
+    font-family: 'IBM Plex Mono', monospace;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: background 0.2s;
+  }
+  .reset-btn:active { background: rgba(255,90,120,0.1); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Sprite Collection Log</div>
+  <h1><span>Sprite Vault</span></h1>
+</header>
+
+<div class="vault">
+  <div class="vault-top">
+    <span class="vault-title">Voortgang</span>
+    <span class="vault-count mono"><span id="obt-count">0</span><span class="slash"> / </span><span id="tot-count">0</span></span>
+  </div>
+  <div class="vault-track">
+    <div class="vault-fill" id="vault-fill"></div>
+  </div>
+  <div class="vault-rarities">
+    <span><span class="dot" style="background:var(--rare)"></span>Rare</span>
+    <span><span class="dot" style="background:var(--epic)"></span>Epic</span>
+    <span><span class="dot" style="background:var(--legendary)"></span>Legendary</span>
+    <span><span class="dot" style="background:var(--mythic)"></span>Mythic</span>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="search-wrap">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    <input type="text" id="search" placeholder="Zoek een sprite…">
+  </div>
+</div>
+<div class="filter-chips">
+  <div class="filter-chip active" data-filter="all">Alle</div>
+  <div class="filter-chip" data-filter="missing">Ontbrekend</div>
+  <div class="filter-chip" data-filter="obtained">In bezit</div>
+  <div class="filter-chip" data-filter="complete">Compleet</div>
+</div>
+
+<div id="list"></div>
+
+<footer>
+  Voortgang wordt lokaal opgeslagen op dit toestel.
+  <br>
+  <button class="reset-btn" id="reset-btn">Alles resetten</button>
+</footer>
+
+<script>
+const VARIANTS = ["Normal", "Gold", "Gummy", "Galaxy", "Gem", "Holofoil"];
+
+const SPRITES = [
+  { name: "Earth", rarity: "Rare", icon: "🌍" },
+  { name: "Fire", rarity: "Rare", icon: "🔥" },
+  { name: "Water", rarity: "Rare", icon: "💧" },
+  { name: "Duck", rarity: "Rare", icon: "🦆" },
+  { name: "Fishy", rarity: "Rare", icon: "🐟" },
+  { name: "Ghost", rarity: "Epic", icon: "👻" },
+  { name: "Demon", rarity: "Epic", icon: "😈" },
+  { name: "King", rarity: "Epic", icon: "👑" },
+  { name: "Dream", rarity: "Epic", icon: "💭" },
+  { name: "Punk", rarity: "Epic", icon: "🎸" },
+  { name: "Aura", rarity: "Epic", icon: "✨" },
+  { name: "Striker", rarity: "Epic", icon: "⚡" },
+  { name: "Zero Point", rarity: "Legendary", icon: "🌀" },
+  { name: "Boss", rarity: "Legendary", icon: "🕶️" },
+  { name: "John Wick", rarity: "Legendary", icon: "🐺" },
+  { name: "Ironmouse", rarity: "Legendary", icon: "🐭" },
+  { name: "Peely", rarity: "Legendary", icon: "🍌" },
+  { name: "Llama", rarity: "Legendary", icon: "🦙" },
+  { name: "Batman", rarity: "Legendary", icon: "🦇" },
+  { name: "Grim", rarity: "Mythic", icon: "💀" },
+  { name: "Pollo", rarity: "Mythic", icon: "🐔" },
+];
+
+const RARITY_COLOR = { Rare: "#4d8fff", Epic: "#b96bff", Legendary: "#ff9d3d", Mythic: "#ff5c8a" };
+const VARIANT_COLOR = { Normal: "#8b93ab", Gold: "#f0c04a", Gummy: "#ff6fc4", Galaxy: "#8b6bff", Gem: "#3ddc97", Holofoil: "#4ad4f0" };
+
+let state = {};
+let currentFilter = 'all';
+
+async function loadState() {
+  try {
+    const res = await window.storage.get("sprite-progress", false);
+    state = res ? JSON.parse(res.value) : {};
+  } catch (e) { state = {}; }
+  render();
+}
+
+async function saveState() {
+  try { await window.storage.set("sprite-progress", JSON.stringify(state), false); }
+  catch (e) { console.error("Opslaan mislukt", e); }
+}
+
+function toggleVariant(spriteName, variant, chipEl) {
+  if (!state[spriteName]) state[spriteName] = {};
+  state[spriteName][variant] = !state[spriteName][variant];
+  saveState();
+
+  if (state[spriteName][variant]) spawnBurst(chipEl, VARIANT_COLOR[variant]);
+
+  render();
+}
+
+function spawnBurst(el, color) {
+  const rect = el.getBoundingClientRect();
+  for (let i = 0; i < 7; i++) {
+    const p = document.createElement('div');
+    p.className = 'burst';
+    p.style.color = color;
+    p.style.setProperty('--ang', (i * 51) + 'deg');
+    p.style.left = (rect.width/2) + 'px';
+    p.style.top = (rect.height/2) + 'px';
+    el.appendChild(p);
+    setTimeout(() => p.remove(), 600);
+  }
+}
+
+function countObtained(spriteName) {
+  const s = state[spriteName] || {};
+  return VARIANTS.filter(v => s[v]).length;
+}
+
+function totalStats() {
+  let obtained = 0;
+  const total = SPRITES.length * VARIANTS.length;
+  SPRITES.forEach(sp => obtained += countObtained(sp.name));
+  return { obtained, total };
+}
+
+function render() {
+  const searchVal = document.getElementById('search').value.toLowerCase();
+
+  const { obtained, total } = totalStats();
+  const pct = total ? Math.round((obtained / total) * 100) : 0;
+  document.getElementById('obt-count').textContent = obtained;
+  document.getElementById('tot-count').textContent = total;
+  document.getElementById('vault-fill').style.width = pct + '%';
+
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+
+  const filtered = SPRITES.filter(sp => {
+    if (searchVal && !sp.name.toLowerCase().includes(searchVal)) return false;
+    const count = countObtained(sp.name);
+    if (currentFilter === 'missing' && count === VARIANTS.length) return false;
+    if (currentFilter === 'obtained' && count === 0) return false;
+    if (currentFilter === 'complete' && count !== VARIANTS.length) return false;
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    list.innerHTML = `<div class="empty-state"><div class="glyph">🔍</div>Geen sprites gevonden.</div>`;
+    return;
+  }
+
+  filtered.forEach((sp, i) => {
+    const card = document.createElement('div');
+    card.className = 'sprite-card';
+    card.dataset.rarity = sp.rarity;
+    card.style.animationDelay = (i * 0.03) + 's';
+
+    const count = countObtained(sp.name);
+    const s = state[sp.name] || {};
+    if (count === VARIANTS.length) {
+      card.classList.add('complete');
+      card.style.setProperty('--card-glow', RARITY_COLOR[sp.rarity] + '33');
+    }
+
+    card.innerHTML = `
+      <div class="sprite-head">
+        <div class="sprite-name-row">
+          <div class="sprite-icon" style="background:${RARITY_COLOR[sp.rarity]}22">${sp.icon}</div>
+          <span class="sprite-name">${sp.name}</span>
+        </div>
+        <span class="rarity-tag ${sp.rarity}">${sp.rarity}</span>
+      </div>
+      <div class="variant-row">
+        ${VARIANTS.map(v => `
+          <div class="variant-chip v-${v} ${s[v] ? 'on' : ''}" data-sprite="${sp.name}" data-variant="${v}">
+            <span class="dot"></span>${v}
+          </div>
+        `).join('')}
+      </div>
+      <div class="sprite-foot">
+        <span class="sprite-progress">${count} / ${VARIANTS.length} varianten</span>
+        <div class="mini-track"><div class="mini-fill" style="width:${(count/VARIANTS.length)*100}%; background:${RARITY_COLOR[sp.rarity]}"></div></div>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  document.querySelectorAll('.variant-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      toggleVariant(chip.dataset.sprite, chip.dataset.variant, chip);
+    });
+  });
+}
+
+document.getElementById('search').addEventListener('input', render);
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    currentFilter = chip.dataset.filter;
+    render();
+  });
+});
+document.getElementById('reset-btn').addEventListener('click', async () => {
+  if (confirm('Weet je zeker dat je alle voortgang wilt resetten?')) {
+    state = {};
+    await saveState();
+    render();
+  }
+});
+
+loadState();
+</script>
+
+</body>
+</html>
