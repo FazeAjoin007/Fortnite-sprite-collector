@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fortnite Sprite Tracker</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d29;
+    --card-border: #2a2e3f;
+    --accent: #7c5cff;
+    --accent2: #00e0c6;
+    --text: #eef0f8;
+    --text-dim: #9096ab;
+    --gold: #ffcf4a;
+    --gummy: #ff6bd6;
+    --galaxy: #7c5cff;
+    --gem: #4ade80;
+    --holofoil: #60d4ff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(160deg, #0f1117, #171a27 60%, #0f1117);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 16px;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-size: 1.4rem;
+    margin: 0 0 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .subtitle { color: var(--text-dim); font-size: 0.85rem; }
+
+  .progress-wrap {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+  .progress-bar-bg {
+    background: #262a3a;
+    border-radius: 8px;
+    height: 10px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 0.3s ease;
+  }
+
+  .controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .controls input[type="text"] {
+    flex: 1;
+    min-width: 140px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    color: var(--text);
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+  }
+  select {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    color: var(--text);
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+  }
+
+  .sprite-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+  .sprite-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .sprite-name {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  .rarity-tag {
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .rarity-Rare { background: #2e4a7d; color: #9ec5ff; }
+  .rarity-Epic { background: #4a2e7d; color: #cba7ff; }
+  .rarity-Legendary { background: #7d5a2e; color: #ffcf8a; }
+  .rarity-Mythic { background: #7d2e4a; color: #ff9ec5; }
+
+  .variant-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .variant-chip {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--card-border);
+    background: #12141d;
+    font-size: 0.78rem;
+    cursor: pointer;
+    user-select: none;
+    color: var(--text-dim);
+    transition: all 0.15s ease;
+  }
+  .variant-chip.on {
+    color: #0f1117;
+    font-weight: 600;
+    border-color: transparent;
+  }
+  .variant-chip .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: currentColor;
+    opacity: 0.5;
+  }
+  .variant-chip.on .dot { opacity: 1; background: #0f1117; }
+
+  .v-Normal.on { background: #4a5268; color: #fff; }
+  .v-Gold.on { background: var(--gold); }
+  .v-Gummy.on { background: var(--gummy); }
+  .v-Galaxy.on { background: var(--galaxy); color: #fff; }
+  .v-Gem.on { background: var(--gem); }
+  .v-Holofoil.on { background: var(--holofoil); }
+
+  .sprite-progress {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-top: 8px;
+  }
+
+  footer {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    margin-top: 20px;
+    padding-bottom: 10px;
+  }
+  .reset-btn {
+    background: none;
+    border: 1px solid #7d2e2e;
+    color: #ff8a8a;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .loading { text-align: center; color: var(--text-dim); padding: 30px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎮 Fortnite Sprite Tracker</h1>
+  <div class="subtitle">Houd bij welke Sprites en varianten je al hebt</div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-top">
+    <span id="progress-label">Laden...</span>
+    <span id="progress-pct">0%</span>
+  </div>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+</div>
+
+<div class="controls">
+  <input type="text" id="search" placeholder="Zoek een Sprite...">
+  <select id="filter">
+    <option value="all">Alle</option>
+    <option value="missing">Alleen ontbrekend</option>
+    <option value="obtained">Alleen behaald</option>
+  </select>
+</div>
+
+<div id="list" class="loading">Bezig met laden...</div>
+
+<footer>
+  Je voortgang wordt automatisch opgeslagen op dit toestel.
+  <br>
+  <button class="reset-btn" id="reset-btn">Alles resetten</button>
+</footer>
+
+<script>
+const VARIANTS = ["Normal", "Gold", "Gummy", "Galaxy", "Gem", "Holofoil"];
+
+// Sprite lijst met rarity — gebaseerd op de huidige in-game collectie
+const SPRITES = [
+  { name: "Earth", rarity: "Rare" },
+  { name: "Fire", rarity: "Rare" },
+  { name: "Water", rarity: "Rare" },
+  { name: "Duck", rarity: "Rare" },
+  { name: "Ghost", rarity: "Epic" },
+  { name: "Demon", rarity: "Epic" },
+  { name: "King", rarity: "Epic" },
+  { name: "Dream", rarity: "Epic" },
+  { name: "Punk", rarity: "Epic" },
+  { name: "Zero Point", rarity: "Legendary" },
+  { name: "Fishy", rarity: "Rare" },
+  { name: "Aura", rarity: "Epic" },
+  { name: "Striker", rarity: "Epic" },
+  { name: "Boss", rarity: "Legendary" },
+  { name: "Grim", rarity: "Mythic" },
+  { name: "John Wick", rarity: "Legendary" },
+  { name: "Ironmouse", rarity: "Legendary" },
+  { name: "Peely", rarity: "Legendary" },
+  { name: "Llama", rarity: "Legendary" },
+  { name: "Batman", rarity: "Legendary" },
+  { name: "Pollo", rarity: "Mythic" },
+];
+
+let state = {}; // { spriteName: { variant: true/false } }
+
+function keyFor() { return "sprite-progress"; }
+
+async function loadState() {
+  try {
+    const res = await window.storage.get(keyFor(), false);
+    state = res ? JSON.parse(res.value) : {};
+  } catch (e) {
+    state = {};
+  }
+  render();
+}
+
+async function saveState() {
+  try {
+    await window.storage.set(keyFor(), JSON.stringify(state), false);
+  } catch (e) {
+    console.error("Opslaan mislukt", e);
+  }
+}
+
+function toggleVariant(spriteName, variant) {
+  if (!state[spriteName]) state[spriteName] = {};
+  state[spriteName][variant] = !state[spriteName][variant];
+  saveState();
+  render();
+}
+
+function countObtained(spriteName) {
+  const s = state[spriteName] || {};
+  return VARIANTS.filter(v => s[v]).length;
+}
+
+function totalStats() {
+  let obtained = 0;
+  const total = SPRITES.length * VARIANTS.length;
+  SPRITES.forEach(sp => obtained += countObtained(sp.name));
+  return { obtained, total };
+}
+
+function render() {
+  const searchVal = document.getElementById('search').value.toLowerCase();
+  const filterVal = document.getElementById('filter').value;
+
+  const { obtained, total } = totalStats();
+  const pct = total ? Math.round((obtained / total) * 100) : 0;
+  document.getElementById('progress-label').textContent = `${obtained} / ${total} varianten`;
+  document.getElementById('progress-pct').textContent = `${pct}%`;
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  const list = document.getElementById('list');
+  list.className = '';
+  list.innerHTML = '';
+
+  const filtered = SPRITES.filter(sp => {
+    if (searchVal && !sp.name.toLowerCase().includes(searchVal)) return false;
+    const count = countObtained(sp.name);
+    if (filterVal === 'missing' && count === VARIANTS.length) return false;
+    if (filterVal === 'obtained' && count === 0) return false;
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="loading">Geen Sprites gevonden.</div>';
+    return;
+  }
+
+  filtered.forEach(sp => {
+    const card = document.createElement('div');
+    card.className = 'sprite-card';
+
+    const count = countObtained(sp.name);
+    const s = state[sp.name] || {};
+
+    card.innerHTML = `
+      <div class="sprite-head">
+        <span class="sprite-name">${sp.name}</span>
+        <span class="rarity-tag rarity-${sp.rarity}">${sp.rarity}</span>
+      </div>
+      <div class="variant-row">
+        ${VARIANTS.map(v => `
+          <div class="variant-chip v-${v} ${s[v] ? 'on' : ''}" data-sprite="${sp.name}" data-variant="${v}">
+            <span class="dot"></span>${v}
+          </div>
+        `).join('')}
+      </div>
+      <div class="sprite-progress">${count} / ${VARIANTS.length} varianten behaald</div>
+    `;
+    list.appendChild(card);
+  });
+
+  document.querySelectorAll('.variant-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      toggleVariant(chip.dataset.sprite, chip.dataset.variant);
+    });
+  });
+}
+
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('filter').addEventListener('change', render);
+document.getElementById('reset-btn').addEventListener('click', async () => {
+  if (confirm('Weet je zeker dat je alle voortgang wilt resetten?')) {
+    state = {};
+    await saveState();
+    render();
+  }
+});
+
+loadState();
+</script>
+
+</body>
+</html>
