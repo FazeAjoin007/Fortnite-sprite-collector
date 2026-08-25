@@ -2,746 +2,596 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Sprite Vault — Fortnite Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KV Zwembaden — Polypropyleen zwembaden op maat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,ital@9..144,300..700,0..1&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
-  html, body {
-    background: #08090d;
+  :root{
+    --ink:#0B1D1A;
+    --petrol:#114C46;
+    --petrol-deep:#0C3A35;
+    --aqua:#7FD8C9;
+    --aqua-bright:#A6EEDF;
+    --travertine:#EFE7D8;
+    --off-white:#FBF9F3;
+    --line: rgba(11,29,26,0.12);
+    --line-light: rgba(251,249,243,0.18);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--off-white);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    letter-spacing:-0.01em;
+    color:var(--ink);
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    font-weight:500;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1160px; margin:0 auto; padding:0 32px;}
+  button{font-family:inherit; cursor:pointer;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:22px 0;
+    transition:all .4s cubic-bezier(.2,.8,.2,1);
+  }
+  header.scrolled{
+    padding:12px 0;
+    background:rgba(251,249,243,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{display:flex; align-items:center; justify-content:space-between;}
+  .logo{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:20px;
+    letter-spacing:-0.01em;
+    display:flex; align-items:center; gap:9px;
+  }
+  .logo-mark{
+    width:14px; height:14px; border-radius:50%;
+    background:var(--petrol);
+    position:relative;
+    box-shadow:0 0 0 3px rgba(17,76,70,0.15);
+  }
+  header.scrolled .logo{color:var(--ink);}
+  .nav-links{display:flex; gap:34px; align-items:center;}
+  .nav-links a{
+    font-size:14.5px; font-weight:500; color:var(--ink);
+    position:relative; padding:4px 0;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; bottom:0; left:0; width:0; height:1.5px;
+    background:var(--petrol); transition:width .3s ease;
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{
+    display:flex; align-items:center; gap:18px;
+  }
+  .phone{
+    font-family:'IBM Plex Mono', monospace; font-size:14px; font-weight:500;
+    display:flex; align-items:center; gap:6px;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:12px 24px; border-radius:100px;
+    font-size:14px; font-weight:600;
+    border:1px solid var(--ink); background:var(--ink); color:var(--off-white);
+    transition:all .3s ease;
+  }
+  .btn:hover{background:transparent; color:var(--ink); transform:translateY(-2px);}
+  .btn-outline{background:transparent; color:var(--ink); border:1px solid var(--ink);}
+  .btn-outline:hover{background:var(--ink); color:var(--off-white);}
+  .btn-light{border-color:var(--off-white); background:var(--off-white); color:var(--petrol-deep);}
+  .btn-light:hover{background:transparent; color:var(--off-white);}
+  .btn-light-outline{border-color:var(--line-light); color:var(--off-white); background:transparent;}
+  .btn-light-outline:hover{background:var(--off-white); color:var(--petrol-deep);}
+
+  @media (max-width:880px){ .nav-links{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex; align-items:center;
+    background:var(--petrol-deep);
+    color:var(--off-white);
+    overflow:hidden;
+    padding-top:100px;
+  }
+  .caustics{
+    position:absolute; inset:0; z-index:0;
+    opacity:0.55;
+    mix-blend-mode:screen;
+  }
+  .hero::before{
+    content:'';
+    position:absolute; inset:0;
+    background:radial-gradient(ellipse at 70% 20%, rgba(127,216,201,0.25), transparent 55%),
+               radial-gradient(ellipse at 15% 85%, rgba(166,238,223,0.15), transparent 50%);
+    z-index:1;
+  }
+  .hero-content{position:relative; z-index:2; max-width:680px;}
+  .hero .eyebrow{color:var(--aqua-bright); margin-bottom:22px; display:block;}
+  .hero h1{
+    font-size:clamp(38px, 5.6vw, 68px);
+    line-height:1.06;
+    font-weight:400;
+    letter-spacing:-0.02em;
+  }
+  .hero h1 em{font-style:italic; color:var(--aqua-bright); font-weight:400;}
+  .hero p{
+    margin-top:26px; font-size:17.5px; color:rgba(251,249,243,0.78);
+    max-width:520px;
+  }
+  .hero-actions{margin-top:38px; display:flex; gap:14px; flex-wrap:wrap;}
+  .hero-scroll{
+    position:absolute; bottom:36px; left:32px; z-index:2;
+    display:flex; align-items:center; gap:10px;
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.1em;
+    color:rgba(251,249,243,0.55); text-transform:uppercase;
+  }
+  .scroll-line{width:1px; height:34px; background:rgba(251,249,243,0.35); position:relative; overflow:hidden;}
+  .scroll-line::after{
+    content:''; position:absolute; top:-100%; left:0; width:100%; height:100%;
+    background:var(--aqua-bright);
+    animation:scrollDrop 2s ease-in-out infinite;
+  }
+  @keyframes scrollDrop{
+    0%{top:-100%;} 60%{top:100%;} 100%{top:100%;}
   }
 
-  :root {
-    --bg-0: #08090d;
-    --panel: #12151f;
-    --panel-2: #171b28;
-    --panel-border: #232838;
-    --ink: #f2f3f8;
-    --ink-dim: #8188a0;
-    --ink-faint: #454b5e;
+  /* reveal on scroll */
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .8s ease, transform .8s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
 
-    --rare: #4d8fff;
-    --rare-dim: #1c2740;
-    --epic: #b96bff;
-    --epic-dim: #2a1c3d;
-    --legendary: #ff9d3d;
-    --legendary-dim: #3d2712;
-    --mythic: #ff5c8a;
-    --mythic-dim: #3d1524;
+  /* ---------- TRUST STRIP ---------- */
+  .trust{
+    background:var(--off-white);
+    border-bottom:1px solid var(--line);
+    padding:44px 0;
+  }
+  .trust-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:28px;
+  }
+  .trust-item{
+    display:flex; flex-direction:column; gap:8px;
+    padding-left:18px; border-left:2px solid var(--petrol);
+  }
+  .trust-item p{font-size:14px; color:rgba(11,29,26,0.65);}
+  .trust-item .t{font-weight:600; font-size:15px;}
+  @media (max-width:880px){ .trust-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:520px){ .trust-grid{grid-template-columns:1fr;} }
 
-    --v-normal: #8b93ab;
-    --v-gold: #f0c04a;
-    --v-gummy: #ff6fc4;
-    --v-galaxy: #8b6bff;
-    --v-gem: #3ddc97;
-    --v-holofoil: #4ad4f0;
-    --v-cube: #6f7bff;
-    --v-quack: #ff9640;
+  /* ---------- SECTION GENERIC ---------- */
+  section{padding:120px 0;}
+  .section-head{max-width:620px; margin-bottom:64px;}
+  .section-head .eyebrow{color:var(--petrol); margin-bottom:16px; display:block;}
+  .section-head h2{font-size:clamp(28px,3.6vw,44px); font-weight:400; line-height:1.15;}
+  .section-head p{margin-top:18px; font-size:16.5px; color:rgba(11,29,26,0.65); max-width:520px;}
 
-    --ease: cubic-bezier(.16,1,.3,1);
-    --ease-bounce: cubic-bezier(.34,1.56,.64,1);
+  /* ---------- INTRO / ABOUT ---------- */
+  .intro{background:var(--off-white);}
+  .intro-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:80px; align-items:center;}
+  .intro-visual{
+    position:relative; aspect-ratio:4/5; border-radius:4px; overflow:hidden;
   }
+  .intro-visual img{width:100%; height:100%; object-fit:cover; transition:transform .8s ease;}
+  .intro-visual:hover img{transform:scale(1.06);}
+  .intro-visual::after{
+    content:''; position:absolute; inset:0;
+    box-shadow:inset 0 0 0 1px rgba(11,29,26,0.08);
+  }
+  .intro-text p{font-size:17px; color:rgba(11,29,26,0.72); margin-bottom:18px;}
+  .intro-text .lead{font-family:'Fraunces', serif; font-size:24px; font-weight:400; color:var(--ink); line-height:1.4; margin-bottom:24px;}
+  @media (max-width:880px){ .intro-grid{grid-template-columns:1fr; gap:40px;} }
 
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  /* ---------- WERKWIJZE (process) ---------- */
+  .process{background:var(--travertine);}
+  .steps{display:flex; flex-direction:column;}
+  .step{
+    display:grid; grid-template-columns:110px 1fr; gap:32px;
+    padding:38px 0; border-top:1px solid var(--line);
+    transition:padding-left .35s ease;
+  }
+  .step:last-child{border-bottom:1px solid var(--line);}
+  .step:hover{padding-left:12px;}
+  .step-num{
+    font-family:'Fraunces', serif; font-size:44px; font-weight:300;
+    color:var(--petrol); opacity:0.55;
+  }
+  .step-body h3{font-size:21px; font-weight:500; margin-bottom:10px;}
+  .step-body p{color:rgba(11,29,26,0.66); font-size:15.5px; max-width:520px;}
+  @media (max-width:600px){ .step{grid-template-columns:1fr; gap:8px;} }
 
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.001ms !important;
-      transition-duration: 0.001ms !important;
-    }
+  /* ---------- ONDERHOUD ---------- */
+  .maintenance{background:var(--petrol-deep); color:var(--off-white);}
+  .maintenance .section-head .eyebrow{color:var(--aqua-bright);}
+  .maintenance .section-head p{color:rgba(251,249,243,0.68);}
+  .care-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(251,249,243,0.14); border-radius:6px; overflow:hidden;}
+  .care-card{
+    background:var(--petrol-deep); padding:38px 30px;
+    transition:background .35s ease;
   }
+  .care-card:hover{background:#0F423C;}
+  .care-card .eyebrow{color:var(--aqua-bright); margin-bottom:16px; display:block;}
+  .care-card h3{color:var(--off-white); font-size:20px; font-weight:500; margin-bottom:10px;}
+  .care-card p{color:rgba(251,249,243,0.65); font-size:14.5px;}
+  @media (max-width:880px){ .care-grid{grid-template-columns:1fr;} }
 
-  body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-    background:
-      radial-gradient(ellipse 900px 520px at 50% -12%, #201138 0%, transparent 62%),
-      radial-gradient(ellipse 700px 500px at 95% 8%, #07202e 0%, transparent 55%),
-      radial-gradient(ellipse 600px 400px at 0% 90%, #1a0f28 0%, transparent 50%),
-      var(--bg-0);
-    background-attachment: fixed;
-    color: var(--ink);
-    min-height: 100vh;
-    padding: 20px 14px 48px;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+  /* ---------- REALISATIES ---------- */
+  .work{background:var(--off-white);}
+  .work-head{display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:56px; flex-wrap:wrap; gap:24px;}
+  .gallery{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:18px;
   }
-
-  .mono { font-family: 'SF Mono', 'Menlo', 'Consolas', monospace; }
-
-  /* ---------- Entrance ---------- */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to { opacity: 1; transform: translateY(0); }
+  .gallery-item{
+    position:relative; overflow:hidden; border-radius:4px;
+    aspect-ratio:1/1;
   }
-  @keyframes floatGlow {
-    0%, 100% { transform: translate(0,0) scale(1); }
-    50% { transform: translate(6px,-8px) scale(1.04); }
+  .gallery-item:nth-child(1){grid-column:span 2; grid-row:span 2; aspect-ratio:auto;}
+  .gallery-item img{width:100%; height:100%; object-fit:cover; transition:transform .7s cubic-bezier(.2,.8,.2,1);}
+  .gallery-item:hover img{transform:scale(1.08);}
+  .gallery-item::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(11,29,26,0.55), transparent 45%);
+    opacity:0; transition:opacity .35s ease;
   }
-  @keyframes pulseRing {
-    0% { box-shadow: 0 0 0 0 rgba(185,107,255,0.35); }
-    100% { box-shadow: 0 0 0 14px rgba(185,107,255,0); }
-  }
-
-  header {
-    text-align: center;
-    margin-bottom: 20px;
-    padding-top: 4px;
-    animation: fadeUp 0.5s var(--ease) backwards;
-  }
-  .badge-row {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-  .badge {
-    position: relative;
-    width: 46px; height: 46px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, var(--epic), var(--rare));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.3rem;
-    animation: floatGlow 4.5s ease-in-out infinite;
-    box-shadow: 0 8px 24px -8px rgba(185,107,255,0.6);
-  }
-  .badge::after {
-    content: '';
-    position: absolute;
-    inset: -6px;
-    border-radius: 18px;
-    border: 1.5px solid rgba(185,107,255,0.3);
-    animation: pulseRing 2.4s ease-out infinite;
-  }
-  .eyebrow {
-    font-family: 'SF Mono', 'Menlo', monospace;
-    font-size: 0.66rem;
-    letter-spacing: 0.2em;
-    color: var(--ink-faint);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  h1 {
-    font-size: 1.7rem;
-    font-weight: 750;
-    margin: 0;
-    letter-spacing: -0.01em;
-  }
-  h1 span {
-    background: linear-gradient(100deg, #6fa8ff, var(--epic) 45%, var(--mythic) 90%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    background-size: 200% auto;
-    animation: gradientShift 6s ease-in-out infinite;
-  }
-  @keyframes gradientShift {
-    0%, 100% { background-position: 0% center; }
-    50% { background-position: 100% center; }
+  .gallery-item:hover::after{opacity:1;}
+  @media (max-width:768px){
+    .gallery{grid-template-columns:repeat(2,1fr);}
+    .gallery-item:nth-child(1){grid-column:span 2;}
   }
 
-  /* ---------- Vault ---------- */
-  .vault {
-    position: relative;
-    background: linear-gradient(180deg, var(--panel-2), var(--panel) 60%);
-    border: 1px solid var(--panel-border);
-    border-radius: 20px;
-    padding: 20px 18px 16px;
-    margin-bottom: 18px;
-    overflow: hidden;
-    animation: fadeUp 0.5s var(--ease) 0.05s backwards;
-    box-shadow: 0 20px 40px -24px rgba(0,0,0,0.6);
+  /* ---------- CONTACT ---------- */
+  .contact{background:var(--travertine); position:relative;}
+  .contact-grid{display:grid; grid-template-columns:0.85fr 1.15fr; gap:70px;}
+  .contact-info h2{font-size:clamp(28px,3.4vw,40px); font-weight:400; margin-bottom:22px;}
+  .contact-info p{color:rgba(11,29,26,0.68); font-size:16px; margin-bottom:34px; max-width:400px;}
+  .info-row{
+    display:flex; gap:16px; padding:18px 0; border-top:1px solid var(--line);
   }
-  .vault::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(139,107,255,0.09), transparent 45%);
-    pointer-events: none;
+  .info-row:last-of-type{border-bottom:1px solid var(--line);}
+  .info-row .label{font-family:'IBM Plex Mono', monospace; font-size:11.5px; text-transform:uppercase; letter-spacing:0.08em; color:rgba(11,29,26,0.5); width:110px; flex-shrink:0; padding-top:2px;}
+  .info-row .val{font-size:15.5px; font-weight:500;}
+  .social-row{display:flex; gap:12px; margin-top:28px;}
+  .social-dot{
+    width:42px; height:42px; border-radius:50%; border:1px solid var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace; font-size:12px;
+    transition:all .3s ease;
   }
-  .vault-meta {
-    font-family: 'SF Mono', monospace;
-    font-size: 0.64rem;
-    color: var(--ink-faint);
-    margin-bottom: 12px;
-  }
-  .vault-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 10px;
-    position: relative;
-  }
-  .vault-title {
-    font-size: 0.78rem;
-    color: var(--ink-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-  .vault-count {
-    font-family: 'SF Mono', monospace;
-    font-size: 1.15rem;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-  }
-  .vault-count .slash { color: var(--ink-faint); font-weight: 400; }
+  .social-dot:hover{background:var(--ink); color:var(--off-white);}
 
-  .vault-track {
-    position: relative;
-    height: 14px;
-    border-radius: 999px;
-    background: #191d29;
-    border: 1px solid #232838;
-    overflow: hidden;
+  .form-card{
+    background:var(--off-white); border-radius:8px; padding:44px;
+    box-shadow:0 30px 60px -20px rgba(11,29,26,0.18);
   }
-  .vault-fill {
-    height: 100%;
-    border-radius: 999px;
-    background: linear-gradient(90deg, var(--rare), var(--epic) 55%, var(--legendary) 85%, var(--mythic));
-    width: 0%;
-    transition: width 0.7s var(--ease);
-    position: relative;
+  .form-row{margin-bottom:22px;}
+  .form-row label{
+    display:block; font-family:'IBM Plex Mono', monospace; font-size:11px;
+    text-transform:uppercase; letter-spacing:0.08em; color:rgba(11,29,26,0.55);
+    margin-bottom:9px;
   }
-  .vault-fill::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
-    width: 46px;
-    animation: shimmer 2.4s ease-in-out infinite;
+  .form-row input, .form-row textarea{
+    width:100%; border:none; border-bottom:1.5px solid var(--line);
+    background:transparent; padding:10px 2px; font-family:'Inter'; font-size:15.5px;
+    color:var(--ink); transition:border-color .3s ease;
   }
-  @keyframes shimmer {
-    0% { transform: translateX(-46px); }
-    100% { transform: translateX(320px); }
+  .form-row input:focus, .form-row textarea:focus{
+    outline:none; border-bottom-color:var(--petrol);
   }
+  .form-row textarea{resize:vertical; min-height:80px;}
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  .pill-group{display:flex; gap:10px; flex-wrap:wrap;}
+  .pill{
+    padding:9px 18px; border-radius:100px; border:1.5px solid var(--line);
+    font-size:13.5px; font-weight:500; color:rgba(11,29,26,0.6);
+    transition:all .25s ease;
+  }
+  .pill input{display:none;}
+  .pill.active, .pill:has(input:checked){
+    border-color:var(--petrol); background:var(--petrol); color:var(--off-white);
+  }
+  .submit-btn{
+    width:100%; margin-top:12px; padding:16px; border-radius:100px;
+    background:var(--ink); color:var(--off-white); border:none;
+    font-weight:600; font-size:15px; transition:all .3s ease;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .submit-btn:hover{background:var(--petrol);}
+  .form-note{
+    margin-top:16px; font-size:12.5px; text-align:center; color:rgba(11,29,26,0.45);
+  }
+  .form-success{
+    display:none; text-align:center; padding:40px 0;
+  }
+  .form-success.show{display:block;}
+  .form-success .eyebrow{color:var(--petrol); display:block; margin-bottom:10px;}
+  .form-success h3{font-size:24px; font-weight:400;}
+  @media (max-width:880px){ .contact-grid{grid-template-columns:1fr;} .form-card{padding:28px;} .two-col{grid-template-columns:1fr;} }
 
-  .vault-rarities {
-    display: flex;
-    gap: 12px;
-    margin-top: 12px;
-    font-family: 'SF Mono', monospace;
-    font-size: 0.66rem;
-    color: var(--ink-dim);
-    flex-wrap: wrap;
-  }
-  .vault-rarities .dot {
-    display: inline-block;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    margin-right: 4px;
-  }
-
-  /* ---------- Controls ---------- */
-  .controls {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 12px;
-    animation: fadeUp 0.5s var(--ease) 0.1s backwards;
-  }
-  .search-wrap {
-    position: relative;
-    flex: 1;
-  }
-  .search-wrap svg {
-    position: absolute;
-    left: 13px; top: 50%;
-    transform: translateY(-50%);
-    opacity: 0.4;
-    pointer-events: none;
-  }
-  input[type="text"] {
-    width: 100%;
-    background: var(--panel);
-    border: 1px solid var(--panel-border);
-    color: var(--ink);
-    padding: 12px 12px 12px 38px;
-    border-radius: 13px;
-    font-size: 0.92rem;
-    font-family: inherit;
-    transition: border-color 0.25s, box-shadow 0.25s;
-  }
-  input[type="text"]:focus {
-    outline: none;
-    border-color: var(--epic);
-    box-shadow: 0 0 0 3px rgba(185,107,255,0.15);
-  }
-  .filter-chips {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 16px;
-    overflow-x: auto;
-    animation: fadeUp 0.5s var(--ease) 0.15s backwards;
-  }
-  .filter-chip {
-    font-family: 'SF Mono', monospace;
-    font-size: 0.72rem;
-    padding: 8px 13px;
-    border-radius: 11px;
-    border: 1px solid var(--panel-border);
-    background: var(--panel);
-    color: var(--ink-dim);
-    cursor: pointer;
-    transition: transform 0.15s var(--ease-bounce), background 0.25s, border-color 0.25s, color 0.25s;
-    white-space: nowrap;
-    user-select: none;
-  }
-  .filter-chip.active {
-    background: rgba(185,107,255,0.16);
-    border-color: var(--epic);
-    color: var(--ink);
-    transform: scale(1.04);
-  }
-  .filter-chip:active { transform: scale(0.94); }
-
-  /* ---------- Sprite cards ---------- */
-  .sprite-card {
-    position: relative;
-    background: var(--panel);
-    border: 1px solid var(--panel-border);
-    border-left: 3px solid var(--panel-border);
-    border-radius: 16px;
-    padding: 15px 15px 13px;
-    margin-bottom: 10px;
-    transition: transform 0.25s var(--ease), border-color 0.35s, box-shadow 0.35s;
-    animation: cardIn 0.4s var(--ease) backwards;
-    will-change: transform;
-  }
-  .sprite-card:active { transform: scale(0.985); }
-  @keyframes cardIn {
-    from { opacity: 0; transform: translateY(10px) scale(0.98); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
-  .sprite-card.complete {
-    box-shadow: 0 0 0 1px rgba(255,255,255,0.03), 0 10px 28px -10px var(--card-glow, transparent);
-  }
-  .sprite-card[data-rarity="Rare"] { border-left-color: var(--rare); }
-  .sprite-card[data-rarity="Epic"] { border-left-color: var(--epic); }
-  .sprite-card[data-rarity="Legendary"] { border-left-color: var(--legendary); }
-  .sprite-card[data-rarity="Mythic"] { border-left-color: var(--mythic); }
-
-  .sprite-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 11px;
-  }
-  .sprite-name-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .sprite-icon {
-    width: 32px; height: 32px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    flex-shrink: 0;
-    transition: transform 0.3s var(--ease-bounce);
-  }
-  .sprite-card.complete .sprite-icon {
-    animation: iconPop 0.5s var(--ease-bounce);
-  }
-  @keyframes iconPop {
-    0% { transform: scale(1); }
-    40% { transform: scale(1.25) rotate(-6deg); }
-    100% { transform: scale(1) rotate(0); }
-  }
-  .sprite-name {
-    font-weight: 650;
-    font-size: 0.96rem;
-    letter-spacing: -0.005em;
-  }
-  .rarity-tag {
-    font-family: 'SF Mono', monospace;
-    font-size: 0.62rem;
-    padding: 3px 9px;
-    border-radius: 999px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    flex-shrink: 0;
-  }
-  .rarity-tag.Rare { background: var(--rare-dim); color: var(--rare); }
-  .rarity-tag.Epic { background: var(--epic-dim); color: var(--epic); }
-  .rarity-tag.Legendary { background: var(--legendary-dim); color: var(--legendary); }
-  .rarity-tag.Mythic { background: var(--mythic-dim); color: var(--mythic); }
-
-  .variant-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .variant-chip {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 7px 12px;
-    border-radius: 999px;
-    border: 1px solid var(--panel-border);
-    background: #0d0f17;
-    font-family: 'SF Mono', monospace;
-    font-size: 0.71rem;
-    cursor: pointer;
-    user-select: none;
-    color: var(--ink-dim);
-    transition: transform 0.18s var(--ease-bounce), background 0.25s, border-color 0.25s, color 0.25s, box-shadow 0.3s;
-    overflow: visible;
-  }
-  .variant-chip:active { transform: scale(0.9); }
-  .variant-chip .dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: currentColor;
-    opacity: 0.4;
-    transition: opacity 0.25s, transform 0.35s var(--ease-bounce);
-  }
-  .variant-chip.on .dot {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-  .variant-chip.on {
-    color: #08090d;
-    font-weight: 650;
-    border-color: transparent;
-    transform: scale(1.03);
-  }
-  .variant-chip.v-Normal.on { background: var(--v-normal); }
-  .variant-chip.v-Gold.on { background: var(--v-gold); box-shadow: 0 0 16px -2px var(--v-gold); }
-  .variant-chip.v-Gummy.on { background: var(--v-gummy); box-shadow: 0 0 16px -2px var(--v-gummy); }
-  .variant-chip.v-Galaxy.on { background: var(--v-galaxy); color: #fff; box-shadow: 0 0 16px -2px var(--v-galaxy); }
-  .variant-chip.v-Gem.on { background: var(--v-gem); box-shadow: 0 0 16px -2px var(--v-gem); }
-  .variant-chip.v-Holofoil.on { background: var(--v-holofoil); box-shadow: 0 0 16px -2px var(--v-holofoil); }
-  .variant-chip.v-Cube.on { background: var(--v-cube); color: #fff; box-shadow: 0 0 16px -2px var(--v-cube); }
-  .variant-chip.v-Quack.on { background: var(--v-quack); box-shadow: 0 0 16px -2px var(--v-quack); }
-
-  .burst {
-    position: absolute;
-    top: 50%; left: 50%;
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: currentColor;
-    pointer-events: none;
-    animation: burst-out 0.6s var(--ease) forwards;
-  }
-  @keyframes burst-out {
-    0% { opacity: 1; transform: translate(-50%,-50%) scale(1) rotate(var(--ang)) translateX(0); }
-    100% { opacity: 0; transform: translate(-50%,-50%) scale(0.2) rotate(var(--ang)) translateX(30px); }
-  }
-
-  .sprite-foot {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 11px;
-  }
-  .sprite-progress {
-    font-family: 'SF Mono', monospace;
-    font-size: 0.68rem;
-    color: var(--ink-faint);
-    font-variant-numeric: tabular-nums;
-  }
-  .mini-track {
-    width: 62px; height: 4px;
-    background: #1c202c;
-    border-radius: 999px;
-    overflow: hidden;
-  }
-  .mini-fill {
-    height: 100%;
-    border-radius: 999px;
-    transition: width 0.5s var(--ease);
-  }
-
-  .empty-state {
-    text-align: center;
-    padding: 54px 20px;
-    color: var(--ink-faint);
-    animation: fadeUp 0.4s var(--ease);
-  }
-  .empty-state .glyph {
-    font-size: 2.1rem;
-    margin-bottom: 10px;
-    opacity: 0.5;
-    display: inline-block;
-    animation: floatGlow 3s ease-in-out infinite;
-  }
-
-  footer {
-    text-align: center;
-    color: var(--ink-faint);
-    font-size: 0.72rem;
-    margin-top: 26px;
-    animation: fadeUp 0.5s var(--ease) 0.2s backwards;
-  }
-  .reset-btn {
-    background: none;
-    border: 1px solid #3a1f26;
-    color: #ff8a9d;
-    padding: 8px 16px;
-    border-radius: 11px;
-    font-size: 0.72rem;
-    font-family: 'SF Mono', monospace;
-    cursor: pointer;
-    margin-top: 12px;
-    transition: background 0.2s, transform 0.15s var(--ease-bounce);
-  }
-  .reset-btn:active { background: rgba(255,90,120,0.12); transform: scale(0.95); }
-
-  /* Toast for full completion */
-  .toast {
-    position: fixed;
-    left: 50%; bottom: 24px;
-    transform: translate(-50%, 20px);
-    background: linear-gradient(135deg, var(--epic), var(--rare));
-    color: #fff;
-    padding: 12px 20px;
-    border-radius: 14px;
-    font-weight: 650;
-    font-size: 0.85rem;
-    box-shadow: 0 12px 32px -8px rgba(185,107,255,0.6);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.35s var(--ease), transform 0.35s var(--ease-bounce);
-    z-index: 50;
-  }
-  .toast.show {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--ink); color:rgba(251,249,243,0.7); padding:70px 0 30px;}
+  .footer-top{display:flex; justify-content:space-between; flex-wrap:wrap; gap:40px; padding-bottom:50px; border-bottom:1px solid rgba(251,249,243,0.12);}
+  .footer-logo{font-family:'Fraunces', serif; font-size:24px; color:var(--off-white); margin-bottom:14px;}
+  .footer-cols{display:flex; gap:70px; flex-wrap:wrap;}
+  .footer-col .eyebrow{color:rgba(251,249,243,0.45); margin-bottom:16px; display:block;}
+  .footer-col a, .footer-col p{display:block; font-size:14.5px; margin-bottom:10px; color:rgba(251,249,243,0.75);}
+  .footer-col a:hover{color:var(--aqua-bright);}
+  .footer-bottom{display:flex; justify-content:space-between; padding-top:26px; font-size:13px; color:rgba(251,249,243,0.4); flex-wrap:wrap; gap:10px;}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="badge-row"><div class="badge">🗝️</div></div>
-  <div class="eyebrow">Sprite Collection Log</div>
-  <h1><span>Sprite Vault</span></h1>
+<header id="siteHeader">
+  <div class="wrap">
+    <nav>
+      <div class="logo"><span class="logo-mark"></span>KV&nbsp;Zwembaden</div>
+      <div class="nav-links">
+        <a href="#intro">Over ons</a>
+        <a href="#werkwijze">Werkwijze</a>
+        <a href="#onderhoud">Onderhoud</a>
+        <a href="#realisaties">Realisaties</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="nav-cta">
+        <span class="phone">☎ 0486 68 00 00</span>
+        <a href="#contact" class="btn">Offerte aanvragen</a>
+      </div>
+    </nav>
+  </div>
 </header>
 
-<div class="vault">
-  <div class="vault-meta">Bijgewerkt t/m 8 aug 2026 · 24 sprites · 109 varianten</div>
-  <div class="vault-top">
-    <span class="vault-title">Voortgang</span>
-    <span class="vault-count mono"><span id="obt-count">0</span><span class="slash"> / </span><span id="tot-count">0</span></span>
+<section class="hero">
+  <svg class="caustics" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="caustic" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="7" result="noise">
+          <animate attributeName="baseFrequency" dur="26s" values="0.012 0.018;0.017 0.012;0.012 0.018" repeatCount="indefinite"/>
+        </feTurbulence>
+        <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0.5  0 0 0 0 0.85  0 0 0 0 0.78  0 0 0 0.9 0"/>
+        <feComponentTransfer><feFuncA type="gamma" amplitude="1" exponent="7" offset="0"/></feComponentTransfer>
+      </filter>
+    </defs>
+    <rect width="1200" height="800" filter="url(#caustic)"/>
+  </svg>
+  <div class="wrap hero-content">
+    <span class="eyebrow">Polypropyleen zwembaden · Putte</span>
+    <h1>Een zwembad dat <em>klopt</em>, van eerste schets tot laatste onderhoudsbeurt.</h1>
+    <p>KV Zwembaden plaatst en onderhoudt polypropyleen zwembaden met één vast team en één aanspreekpunt — zodat u zich alleen nog om het zwemmen hoeft te bekommeren.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-light">Offerte aanvragen</a>
+      <a href="#realisaties" class="btn btn-light-outline">Bekijk realisaties</a>
+    </div>
   </div>
-  <div class="vault-track">
-    <div class="vault-fill" id="vault-fill"></div>
-  </div>
-  <div class="vault-rarities">
-    <span><span class="dot" style="background:var(--rare)"></span>Rare</span>
-    <span><span class="dot" style="background:var(--epic)"></span>Epic</span>
-    <span><span class="dot" style="background:var(--legendary)"></span>Legendary</span>
-    <span><span class="dot" style="background:var(--mythic)"></span>Mythic</span>
+  <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<div class="trust">
+  <div class="wrap trust-grid">
+    <div class="trust-item reveal"><span class="t">Eén vast aanspreekpunt</span><p>Van kennismaking tot oplevering dezelfde contactpersoon.</p></div>
+    <div class="trust-item reveal"><span class="t">Vast team van medewerkers</span><p>Geen wisselende onderaannemers op de werf.</p></div>
+    <div class="trust-item reveal"><span class="t">Zaakvoerder aanwezig</span><p>Van de eerste tot de laatste werkdag ter plaatse.</p></div>
+    <div class="trust-item reveal"><span class="t">100% polypropyleen</span><p>Duurzaam, vorm- en slijtvast, milieuvriendelijk.</p></div>
   </div>
 </div>
 
-<div class="controls">
-  <div class="search-wrap">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-    <input type="text" id="search" placeholder="Zoek een sprite…">
+<section class="intro" id="intro">
+  <div class="wrap intro-grid">
+    <div class="intro-visual reveal">
+      <img src="https://static.wixstatic.com/media/28813d_09dab5bc95c344de9fe0117449ed77e4~mv2.jpeg/v1/fill/w_800,h_1000,al_c,q_85,enc_avif,quality_auto/28813d_09dab5bc95c344de9fe0117449ed77e4~mv2.jpeg" alt="Gerealiseerd polypropyleen zwembad">
+    </div>
+    <div class="intro-text reveal">
+      <span class="eyebrow" style="color:var(--petrol); display:block; margin-bottom:18px;">Wie we zijn</span>
+      <p class="lead">Een eigen zwembad is voor veel gezinnen een droom — bij KV Zwembaden zorgen we dat die droom ook op lange termijn standhoudt.</p>
+      <p>We werken uitsluitend met polypropyleen: een duurzaam materiaal dat zijn vorm behoudt, bestand is tegen slijtage en weinig belastend is voor het milieu. Zo krijgt u niet zomaar een zwembad, maar een investering waar u en uw huisgenoten jarenlang van genieten.</p>
+      <p>Onderhoud is daarbij geen bijzaak. Een correct en frequent onderhoud is wat het verschil maakt tussen een zwembad dat verweert, en een zwembad dat blijft schitteren.</p>
+      <a href="#werkwijze" class="btn btn-outline" style="margin-top:8px;">Ontdek onze werkwijze</a>
+    </div>
   </div>
-</div>
-<div class="filter-chips">
-  <div class="filter-chip active" data-filter="all">Alle</div>
-  <div class="filter-chip" data-filter="missing">Ontbrekend</div>
-  <div class="filter-chip" data-filter="obtained">In bezit</div>
-  <div class="filter-chip" data-filter="complete">Compleet</div>
-</div>
+</section>
 
-<div id="list"></div>
+<section class="process" id="werkwijze">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Werkwijze</span>
+      <h2>In enkele heldere stappen naar uw droomzwembad.</h2>
+      <p>Elk project doorloopt hetzelfde zorgvuldige traject — zodat u vooraf precies weet wat u kunt verwachten.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <div class="step-body"><h3>Kennismaking &amp; advies</h3><p>We bespreken uw tuin, wensen en budget en stellen een aanpak op maat voor.</p></div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">02</div>
+        <div class="step-body"><h3>Ontwerp &amp; offerte</h3><p>U ontvangt een duidelijk voorstel met materiaalkeuze, planning en prijs.</p></div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">03</div>
+        <div class="step-body"><h3>Plaatsing door een vast team</h3><p>Onze eigen medewerkers voeren de werken nauwkeurig uit, met de zaakvoerder ter plaatse.</p></div>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">04</div>
+        <div class="step-body"><h3>Oplevering &amp; nazorg</h3><p>Bij oplevering loodsen we u door het onderhoud, zodat u meteen zelfzeker kunt zwemmen.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="maintenance" id="onderhoud">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Onderhoud</span>
+      <h2>Een zwembad blijft mooi bij wie er naar omkijkt.</h2>
+      <p>Wij zorgen dat uw zwembad en alle onderdelen in topconditie blijven — het hele seizoen door.</p>
+    </div>
+    <div class="care-grid">
+      <div class="care-card reveal">
+        <span class="eyebrow">Waterkwaliteit</span>
+        <h3>Waterbehandeling</h3>
+        <p>Correcte dosering en opvolging voor helder, gezond zwemwater.</p>
+      </div>
+      <div class="care-card reveal">
+        <span class="eyebrow">Techniek</span>
+        <h3>Installatie &amp; toestellen</h3>
+        <p>Controle en onderhoud van pomp, filter en verwarming.</p>
+      </div>
+      <div class="care-card reveal">
+        <span class="eyebrow">Seizoen</span>
+        <h3>Openen &amp; winterklaar maken</h3>
+        <p>Uw zwembad startklaar bij lente, zorgvuldig afgesloten in het najaar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="work" id="realisaties">
+  <div class="wrap">
+    <div class="work-head reveal">
+      <div class="section-head" style="margin-bottom:0;">
+        <span class="eyebrow">Realisaties</span>
+        <h2>Enkele zwembaden die we mochten plaatsen.</h2>
+      </div>
+      <a href="#contact" class="btn btn-outline">Vraag uw eigen ontwerp aan</a>
+    </div>
+    <div class="gallery">
+      <div class="gallery-item reveal"><img src="https://static.wixstatic.com/media/28813d_257ac21ab76f4908bfa9012b0a02f447~mv2.jpg/v1/fit/w_800,h_600,q_90,enc_avif,quality_auto/28813d_257ac21ab76f4908bfa9012b0a02f447~mv2.jpg" alt="Zwembadrealisatie"></div>
+      <div class="gallery-item reveal"><img src="https://static.wixstatic.com/media/28813d_f27225d2cc6141bc8bd401968cd3a46f~mv2.jpeg/v1/fit/w_500,h_500,q_90,enc_avif,quality_auto/28813d_f27225d2cc6141bc8bd401968cd3a46f~mv2.jpeg" alt="Zwembadrealisatie"></div>
+      <div class="gallery-item reveal"><img src="https://static.wixstatic.com/media/28813d_c3da03ed6e2c42ce8ea0379bdb3c06db~mv2.jpeg/v1/fit/w_500,h_500,q_90,enc_avif,quality_auto/28813d_c3da03ed6e2c42ce8ea0379bdb3c06db~mv2.jpeg" alt="Zwembadrealisatie"></div>
+      <div class="gallery-item reveal"><img src="https://static.wixstatic.com/media/28813d_d33c492411484b8d949c29c6bd77661e~mv2.jpg/v1/fit/w_500,h_500,q_90,enc_avif,quality_auto/28813d_d33c492411484b8d949c29c6bd77661e~mv2.jpg" alt="Zwembadrealisatie"></div>
+      <div class="gallery-item reveal"><img src="https://static.wixstatic.com/media/28813d_e8776e042e2c4c3e8b422db56253af0f~mv2.jpeg/v1/fit/w_500,h_500,q_90,enc_avif,quality_auto/28813d_e8776e042e2c4c3e8b422db56253af0f~mv2.jpeg" alt="Zwembadrealisatie"></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap contact-grid">
+    <div class="contact-info reveal">
+      <span class="eyebrow" style="color:var(--petrol);">Contact</span>
+      <h2 style="margin-top:14px;">Klaar voor uw eigen zwembad?</h2>
+      <p>Vul het formulier in of bel ons rechtstreeks — we nemen spoedig contact met u op.</p>
+      <div class="info-row"><span class="label">Adres</span><span class="val">Slameuterstraat 25, 2580 Putte</span></div>
+      <div class="info-row"><span class="label">Telefoon</span><span class="val">0486 68 00 00</span></div>
+      <div class="info-row"><span class="label">E-mail</span><span class="val">admin@kvzwembaden.be</span></div>
+      <div class="info-row"><span class="label">Openingsuren</span><span class="val">Ma–Za: 08:00–20:00 · Zo: gesloten</span></div>
+      <div class="social-row">
+        <a href="https://www.facebook.com/KV-Zwembaden-1803817583238123/" class="social-dot" aria-label="Facebook">f</a>
+        <a href="https://www.instagram.com/Kv.zwembaden/" class="social-dot" aria-label="Instagram">ig</a>
+      </div>
+    </div>
+
+    <div class="form-card reveal">
+      <form id="contactForm">
+        <div class="two-col">
+          <div class="form-row"><label>Naam</label><input type="text" required></div>
+          <div class="form-row"><label>E-mail</label><input type="email" required></div>
+        </div>
+        <div class="form-row"><label>Telefoon</label><input type="tel"></div>
+        <div class="form-row">
+          <label>Contacteer ons voor</label>
+          <div class="pill-group">
+            <label class="pill"><input type="radio" name="reden" checked>Zelf plaatsing</label>
+            <label class="pill"><input type="radio" name="reden">Plaatsing door KV Zwembaden</label>
+            <label class="pill"><input type="radio" name="reden">Andere</label>
+          </div>
+        </div>
+        <div class="form-row"><label>Bericht</label><textarea rows="4" placeholder="Vertel ons over uw project..."></textarea></div>
+        <button type="submit" class="submit-btn">Verzenden →</button>
+        <p class="form-note">We reageren doorgaans binnen de 2 werkdagen.</p>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <span class="eyebrow">Verzonden</span>
+        <h3>Bedankt voor uw bericht!</h3>
+        <p style="color:rgba(11,29,26,0.6); margin-top:10px;">We nemen zo snel mogelijk contact met u op.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <footer>
-  Voortgang wordt lokaal opgeslagen in deze browser.
-  <br>
-  <button class="reset-btn" id="reset-btn">Alles resetten</button>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">KV Zwembaden</div>
+        <p style="max-width:280px; font-size:14px;">Polypropyleen zwembaden plaatsen en onderhouden in Putte en omstreken.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <span class="eyebrow">Navigatie</span>
+          <a href="#intro">Over ons</a>
+          <a href="#werkwijze">Werkwijze</a>
+          <a href="#onderhoud">Onderhoud</a>
+          <a href="#realisaties">Realisaties</a>
+        </div>
+        <div class="footer-col">
+          <span class="eyebrow">Contact</span>
+          <p>Slameuterstraat 25, 2580 Putte</p>
+          <p>admin@kvzwembaden.be</p>
+          <p>0486 68 00 00</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 KV Zwembaden — BE 0681.507.350</span>
+      <span>Ontwerp-mockup, niet-officiële website</span>
+    </div>
+  </div>
 </footer>
 
-<div class="toast" id="toast"></div>
-
 <script>
-// Data geverifieerd t/m 8 augustus 2026 (na de Gem Sprite-update van 6 augustus)
-const SPRITES = [
-  { name: "Water", rarity: "Rare", icon: "💧", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil","Quack","Gem"] },
-  { name: "Earth", rarity: "Rare", icon: "🌍", variants: ["Normal","Gold","Gummy","Galaxy","Cube","Quack","Gem"] },
-  { name: "Fire", rarity: "Rare", icon: "🔥", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil","Cube","Quack"] },
-  { name: "Fishy", rarity: "Rare", icon: "🐟", variants: ["Normal","Gold","Gummy","Galaxy","Cube"] },
-  { name: "Air", rarity: "Rare", icon: "🌬️", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil"] },
-  { name: "Duck", rarity: "Epic", icon: "🦆", variants: ["Normal","Gold","Gummy","Galaxy","Gem"] },
-  { name: "Ghost", rarity: "Epic", icon: "👻", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil"] },
-  { name: "Demon", rarity: "Epic", icon: "😈", variants: ["Normal","Gold","Gummy","Galaxy","Gem"] },
-  { name: "King", rarity: "Epic", icon: "👑", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil"] },
-  { name: "Aura", rarity: "Epic", icon: "✨", variants: ["Normal","Gold","Gummy","Galaxy","Gem"] },
-  { name: "Striker", rarity: "Epic", icon: "⚡", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil"] },
-  { name: "Dream", rarity: "Legendary", icon: "💭", variants: ["Normal","Gold","Gummy","Galaxy","Cube"] },
-  { name: "Punk", rarity: "Legendary", icon: "🎸", variants: ["Normal","Gold","Gummy","Galaxy","Cube","Gem"] },
-  { name: "Boss", rarity: "Legendary", icon: "🕶️", variants: ["Normal","Gold","Gummy","Galaxy","Cube"] },
-  { name: "Seven", rarity: "Legendary", icon: "7️⃣", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil"] },
-  { name: "Lootin' Llama", rarity: "Legendary", icon: "🦙", variants: ["Normal","Gold","Gummy","Galaxy","Gem"] },
-  { name: "Peeky Peely", rarity: "Legendary", icon: "🍌", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil"] },
-  { name: "Batman", rarity: "Mythic", icon: "🦇", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil","Cube"] },
-  { name: "Grim Reaper", rarity: "Mythic", icon: "💀", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil","Cube","Gem"] },
-  { name: "Zero Point", rarity: "Mythic", icon: "🌀", variants: ["Normal","Gold","Gummy","Galaxy","Holofoil","Cube","Quack","Gem"] },
-  { name: "Burnt Peanut", rarity: "Mythic", icon: "🥜", variants: ["Normal"] },
-  { name: "Vini Jr.", rarity: "Mythic", icon: "⚽", variants: ["Normal"] },
-  { name: "Pollo", rarity: "Mythic", icon: "🐔", variants: ["Normal"] },
-  { name: "John Wick", rarity: "Mythic", icon: "🐺", variants: ["Normal"] },
-];
-
-const RARITY_COLOR = { Rare: "#4d8fff", Epic: "#b96bff", Legendary: "#ff9d3d", Mythic: "#ff5c8a" };
-const VARIANT_COLOR = { Normal: "#8b93ab", Gold: "#f0c04a", Gummy: "#ff6fc4", Galaxy: "#8b6bff", Gem: "#3ddc97", Holofoil: "#4ad4f0", Cube: "#6f7bff", Quack: "#ff9640" };
-
-let state = {};
-let currentFilter = 'all';
-let lastFullPct = 0;
-
-function loadState() {
-  try {
-    const raw = localStorage.getItem("sprite-progress");
-    state = raw ? JSON.parse(raw) : {};
-  } catch (e) { state = {}; }
-  render();
-}
-
-function saveState() {
-  try { localStorage.setItem("sprite-progress", JSON.stringify(state)); }
-  catch (e) { console.error("Opslaan mislukt", e); }
-}
-
-function toggleVariant(spriteName, variant, chipEl) {
-  if (!state[spriteName]) state[spriteName] = {};
-  state[spriteName][variant] = !state[spriteName][variant];
-  saveState();
-
-  if (state[spriteName][variant]) {
-    spawnBurst(chipEl, VARIANT_COLOR[variant]);
-    const sp = SPRITES.find(s => s.name === spriteName);
-    const count = countObtained(sp);
-    if (count === sp.variants.length) showToast(`${spriteName} compleet! ✨`);
-  }
-
-  render();
-}
-
-function spawnBurst(el, color) {
-  const rect = el.getBoundingClientRect();
-  for (let i = 0; i < 7; i++) {
-    const p = document.createElement('div');
-    p.className = 'burst';
-    p.style.color = color;
-    p.style.setProperty('--ang', (i * 51) + 'deg');
-    p.style.left = (rect.width/2) + 'px';
-    p.style.top = (rect.height/2) + 'px';
-    el.appendChild(p);
-    setTimeout(() => p.remove(), 650);
-  }
-}
-
-let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
-}
-
-function countObtained(sprite) {
-  const s = state[sprite.name] || {};
-  return sprite.variants.filter(v => s[v]).length;
-}
-
-function totalStats() {
-  let obtained = 0, total = 0;
-  SPRITES.forEach(sp => { obtained += countObtained(sp); total += sp.variants.length; });
-  return { obtained, total };
-}
-
-function render() {
-  const searchVal = document.getElementById('search').value.toLowerCase();
-
-  const { obtained, total } = totalStats();
-  const pct = total ? Math.round((obtained / total) * 100) : 0;
-  document.getElementById('obt-count').textContent = obtained;
-  document.getElementById('tot-count').textContent = total;
-  document.getElementById('vault-fill').style.width = pct + '%';
-
-  const list = document.getElementById('list');
-  list.innerHTML = '';
-
-  const filtered = SPRITES.filter(sp => {
-    if (searchVal && !sp.name.toLowerCase().includes(searchVal)) return false;
-    const count = countObtained(sp);
-    if (currentFilter === 'missing' && count === sp.variants.length) return false;
-    if (currentFilter === 'obtained' && count === 0) return false;
-    if (currentFilter === 'complete' && count !== sp.variants.length) return false;
-    return true;
+  // header shrink on scroll
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
   });
 
-  if (filtered.length === 0) {
-    list.innerHTML = `<div class="empty-state"><div class="glyph">🔍</div>Geen sprites gevonden.</div>`;
-    return;
-  }
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
 
-  filtered.forEach((sp, i) => {
-    const card = document.createElement('div');
-    card.className = 'sprite-card';
-    card.dataset.rarity = sp.rarity;
-    card.style.animationDelay = Math.min(i * 0.03, 0.4) + 's';
-
-    const count = countObtained(sp);
-    const s = state[sp.name] || {};
-    if (count === sp.variants.length) {
-      card.classList.add('complete');
-      card.style.setProperty('--card-glow', RARITY_COLOR[sp.rarity] + '33');
-    }
-
-    card.innerHTML = `
-      <div class="sprite-head">
-        <div class="sprite-name-row">
-          <div class="sprite-icon" style="background:${RARITY_COLOR[sp.rarity]}22">${sp.icon}</div>
-          <span class="sprite-name">${sp.name}</span>
-        </div>
-        <span class="rarity-tag ${sp.rarity}">${sp.rarity}</span>
-      </div>
-      <div class="variant-row">
-        ${sp.variants.map(v => `
-          <div class="variant-chip v-${v} ${s[v] ? 'on' : ''}" data-sprite="${sp.name}" data-variant="${v}">
-            <span class="dot"></span>${v}
-          </div>
-        `).join('')}
-      </div>
-      <div class="sprite-foot">
-        <span class="sprite-progress">${count} / ${sp.variants.length} varianten</span>
-        <div class="mini-track"><div class="mini-fill" style="width:${(count/sp.variants.length)*100}%; background:${RARITY_COLOR[sp.rarity]}"></div></div>
-      </div>
-    `;
-    list.appendChild(card);
-  });
-
-  document.querySelectorAll('.variant-chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      toggleVariant(chip.dataset.sprite, chip.dataset.variant, chip);
+  // pill selection
+  document.querySelectorAll('.pill input').forEach(input => {
+    input.addEventListener('change', () => {
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      input.closest('.pill').classList.add('active');
     });
   });
-}
 
-document.getElementById('search').addEventListener('input', render);
-document.querySelectorAll('.filter-chip').forEach(chip => {
-  chip.addEventListener('click', () => {
-    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
-    currentFilter = chip.dataset.filter;
-    render();
+  // fake form submit (visual only)
+  const form = document.getElementById('contactForm');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    form.style.display = 'none';
+    document.getElementById('formSuccess').classList.add('show');
   });
-});
-document.getElementById('reset-btn').addEventListener('click', () => {
-  if (confirm('Weet je zeker dat je alle voortgang wilt resetten?')) {
-    state = {};
-    saveState();
-    render();
-  }
-});
-
-loadState();
 </script>
 
 </body>
